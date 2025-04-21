@@ -16,31 +16,10 @@
 
 - git push origin feature/service
 
-# UPDATE MAIN DARI DEV
+## branch naming, contoh : 
+- feature/nama-fitur, bugfix/nama-bug, hotfix/patch-x, test/nama-test
 
-5. Pindah ke branch dev dan up-to-date dengan branch dev
-
-- git checkout dev
-- git pull origin dev
-
-6. Pindah ke branch main
-
-- git checkout main
-
-7. Ambil update terbaru dari remote main
-
-- git pull origin main
-
-8. Merge perubahan dari dev ke main
-
-- git merge dev
-
-9. Push ke remote main
-
-- git push origin main
-
-## branch naming, contoh : feature/nama-fitur, bugfix/nama-bug, hotfix/patch-x, test/nama-test
-
+## commit message, contoh:
 - feat: fitur baru
 - fix: perbaikan bug
 - test: buat test
