@@ -36,11 +36,11 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     };
 
     return (
-        <AuthLayout title="Reset password" description="Please enter your new password below">
+        <AuthLayout title="Reset password" description="Buat password baru">
             <Head title="Reset password" />
 
             <form onSubmit={submit}>
-                <div className="grid gap-6">
+                <div className="grid gap-6 w-[18rem]">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
                         <Input
@@ -82,7 +82,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             value={data.password_confirmation}
                             className="mt-1 block w-full"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
-                            placeholder="Confirm password"
+                            placeholder="Konfirmasi password"
                         />
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>

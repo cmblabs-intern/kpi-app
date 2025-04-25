@@ -21,16 +21,26 @@ export default function ForgotPassword({ status }: { status?: string }) {
         post(route('password.email'));
     };
 
-    return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
-            <Head title="Forgot password" />
+    const isErrorStatus = status?.toLowerCase().includes('tidak tersedia');
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+    return (
+        <AuthLayout title="Lupa kata sandi" description="Masukkan email untuk reset kata sandi anda">
+            <Head title="Lupa kata sandi" />
+
+            {status && (
+                <div
+                    className={`mb-4 text-center text-sm font-medium ${
+                        isErrorStatus ? 'text-red-600' : 'text-green-600'
+                    }`}
+                >
+                    {status}
+                </div>
+            )}
 
             <div className="space-y-6">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Alamat email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -46,16 +56,16 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     </div>
 
                     <div className="my-6 flex items-center justify-start">
-                        <Button className="w-full" disabled={processing}>
+                        <Button className="w-full text-white bg-sky-600 hover:bg-sky-500/50" disabled={processing}>
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Email password reset link
+                            Kirim Link Reset
                         </Button>
                     </div>
                 </form>
 
                 <div className="text-muted-foreground space-x-1 text-center text-sm">
-                    <span>Or, return to</span>
-                    <TextLink href={route('login')}>log in</TextLink>
+                    <span>Kembali ke</span>
+                    <TextLink href={route('login')}>login</TextLink>
                 </div>
             </div>
         </AuthLayout>

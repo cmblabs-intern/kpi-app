@@ -8,12 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { toast } from 'sonner';
 
 type RegisterForm = {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
+    phone: string;
+    address: string;
 };
 
 export default function Register() {
@@ -22,22 +25,28 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        phone: '',
+        address: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
+            onSuccess: () => {
+                console.log('REGISTER FORM | Data baru sukses dibuat: ', data)
+                toast.success('Berhasil login');
+            },
         });
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <AuthLayout title="Buat akun baru" description="Silakan isi data di bawah untuk membuat akun">
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">Nama</Label>
                         <Input
                             id="name"
                             type="text"
@@ -48,14 +57,14 @@ export default function Register() {
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
-                            placeholder="Full name"
-                            className='border-white'
+                            placeholder="Nama lengkap"
+                            className="border-white"
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Alamat email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -66,13 +75,13 @@ export default function Register() {
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
                             placeholder="email@example.com"
-                            className='border-white'
+                            className="border-white"
                         />
                         <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Kata sandi</Label>
                         <Input
                             id="password"
                             type="password"
@@ -82,14 +91,14 @@ export default function Register() {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
-                            placeholder="Password"
-                            className='border-white'
+                            placeholder="Masukan kata sandi"
+                            className="border-white"
                         />
                         <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
+                        <Label htmlFor="password_confirmation">Konfirmasi kata sandi</Label>
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -99,22 +108,61 @@ export default function Register() {
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
-                            placeholder="Confirm password"
-                            className='border-white'
+                            placeholder="Masukan kata sandi"
+                            className="border-white"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-2 w-full bg-sky-600 hover:bg-sky-500/50 cursor-pointer text-white" tabIndex={5} disabled={processing}>
+                    <div className="grid gap-2">
+                        <Label htmlFor="phone">Nomor Handphone</Label>
+                        <Input
+                            id="phone"
+                            type="phone"
+                            required
+                            tabIndex={2}
+                            autoComplete="phone"
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            disabled={processing}
+                            placeholder="+628123456789"
+                            className="border-white"
+                        />
+                        <InputError message={errors.phone} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="address">Alamat tempat tinggal</Label>
+                        <Input
+                            id="address"
+                            type="address"
+                            required
+                            tabIndex={2}
+                            autoComplete="address"
+                            value={data.address}
+                            onChange={(e) => setData('address', e.target.value)}
+                            disabled={processing}
+                            placeholder="Masukan alamat tempat tinggal"
+                            className="border-white"
+                        />
+                        <InputError message={errors.address} />
+                    </div>
+
+                    <Button
+                        type="submit"
+                        className="mt-2 w-full cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50"
+                        tabIndex={5}
+                        disabled={processing}
+                    >
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
+                        Buat akun baru
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
+                    Sudah memiliki akun?{' '}
                     <TextLink href={route('login')} tabIndex={6}>
-                        Log in
+                        Login
                     </TextLink>
                 </div>
             </form>

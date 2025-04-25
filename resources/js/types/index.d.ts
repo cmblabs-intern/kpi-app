@@ -37,7 +37,77 @@ export interface User {
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    role: UserRole;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Division {
+    id: number;
+    name: string;
+    position: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Employee {
+    id: number;
+    user_id: number;
+    division_id: number;
+    employee_code: number;
+    user: User;
+    division: Division;
+    created_at: string;
+    updated_at: string;
+}
+
+export enum UserRole {
+    Admin = 'admin',
+    User = 'user',
+}
+
+export interface PageProps<T = unknown> extends SharedData {
+    flash?: {
+        success?: string;
+        error?: string;
+    };
+    errors?: Record<string, string>;
+    data?: T;
+}
+
+export interface UserResponse {
+    data: User[];
+    meta?: {
+      total: number;
+      perPage: number;
+      currentPage: number;
+      totalPages: number;
+    };
+    message?: string; 
+    status: string;
+  }
+
+export interface DivisionResponse {
+    data: Division[];
+    meta?: {
+      total: number;
+      perPage: number;
+      currentPage: number;
+      totalPages: number;
+    };
+    message?: string; 
+    status: string;
+}
+  
+export interface EmployeeResponse {
+    data: Employee[];
+    meta?: {
+      total: number;
+      perPage: number;
+      currentPage: number;
+      totalPages: number;
+    };
+    message?: string; 
+    status: string;
+  }
