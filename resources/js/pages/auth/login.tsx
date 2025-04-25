@@ -41,7 +41,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Alamat email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -59,10 +59,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     <div className="grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Kata sandi</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Lupa password?
+                                    Lupa kata sandi?
                                 </TextLink>
                             )}
                         </div>
@@ -74,13 +74,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="current-password"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
+                            placeholder="Masukan kata sandi"
                             className='border-white'
                         />
                         <InputError message={errors.password} />
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full bg-sky-600 hover:bg-sky-500/50 cursor-pointer text-white" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-4 w-full bg-sky-600 hover:bg-sky-500/50 text-white" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
