@@ -21,6 +21,7 @@ class EmployeeRepository
       'user_id' => $data['user_id'],
       'division_id' => $data['division_id'],
       'employee_code' => $data['employee_code'],
+      'position' => $data['position'],
     ]);
   }
 

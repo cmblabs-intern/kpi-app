@@ -1,6 +1,8 @@
 import { Employee } from '@/types'
 import { ColumnDef } from "@tanstack/react-table"
 import EmployeeAction from './employee-action'
+import DetailDropdown from '../detail-dropdown'
+import UserDetailDropdown from '../user-detail-dropdown'
 
 export const employeeColumns: ColumnDef<Employee>[] = [
   {
@@ -12,41 +14,33 @@ export const employeeColumns: ColumnDef<Employee>[] = [
     header: "Kode Karyawan",
   },
   {
-    accessorKey: "position",
-    header: "Jabatan",
-    cell: ({ row }) => row.original.division?.name ?? '-',
-  },
-  {
-    accessorKey: "division_id",
-    header: "ID Divisi",
-  },
-  {
     accessorKey: "name",
     header: "Nama",
-    cell: ({ row }) => row.original.user?.name ?? '-',
+    accessorFn: (row) => row.user?.name ?? '',
+    cell: ({ row }) => row.original.user.name ?? '-',
   },
   {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => row.original.user?.email ?? '-',
+    accessorKey: "position",
+    header: "Jabatan",
   },
   {
-    accessorKey: "phone",
-    header: "Nomor HP",
-    cell: ({ row }) => row.original.user?.phone ?? '-',
+    accessorKey: "division_name",
+    header: "Divisi",
+    cell: ({row}) => row.original.division?.name ?? '-'
   },
   {
-    accessorKey: "address",
-    header: "Alamat",
-    cell: ({ row }) => row.original.user?.address ?? '-',
+    accessorKey: "user_detail",
+    header: "Informasi Karyawan",
+    cell: ({ row }) => (
+      <UserDetailDropdown email={row.original.user?.email} phone={row.original.user?.phone} address={row.original.user?.address as string}/>
+    ),
   },
   {
-    accessorKey: "created_at",
-    header: "Tanggal dibuat",
-  },
-  {
-    accessorKey: "updated_at",
-    header: "Tanggal diperbarui",
+    accessorKey: "detail_timestamps",
+    header: "Informasi Waktu",
+    cell: ({ row }) => (
+      <DetailDropdown created_at={ row.original.created_at } updated_at={ row.original.updated_at } />
+    )
   },
   {
     accessorKey: 'id',

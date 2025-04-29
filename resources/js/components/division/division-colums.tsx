@@ -12,10 +12,6 @@ export const divisionColumns: ColumnDef<Division>[] = [
     header: "Nama Divisi",
   },
   {
-    accessorKey: "position;",
-    header: "Jabatan",
-  },
-  {
     accessorKey: "created_at",
     header: "Tanggal dibuat",
   },

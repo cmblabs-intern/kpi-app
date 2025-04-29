@@ -1,5 +1,5 @@
-import { Division, PageProps, User } from '@/types';
-import { router, usePage } from '@inertiajs/react';
+import { Division, User } from '@/types';
+import { router } from '@inertiajs/react';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ type EmployeeActionProps = {
         user_id: number;
         division_id: number;
         employee_code: number;
+        position: string;
         created_at: string;
         updated_at: string;
         user: User;
@@ -25,7 +26,6 @@ type EmployeeActionProps = {
 
 const EmployeeAction = ({ employee }: EmployeeActionProps) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const { divisions } = usePage<PageProps<{ divisions: Division }>>().props;
 
     const handleDelete = () => {
         router.delete(`/employees/dashboard/${employee.id}`, {
@@ -37,7 +37,6 @@ const EmployeeAction = ({ employee }: EmployeeActionProps) => {
             },
         });
     };
-    console.log('EMPLOYEE ACTION | Employee: ', employee);
     return (
         <>
             <DialogForm
@@ -56,7 +55,7 @@ const EmployeeAction = ({ employee }: EmployeeActionProps) => {
                     employee_code={employee.employee_code.toString()}
                     user={employee.user}
                     employee_division={employee.division}
-                    divisions={divisions}
+                    position={employee.position}
                     onSuccess={() => setIsDialogOpen(false)}
                 />
             </DialogForm>

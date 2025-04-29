@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         <AuthLayout title="Masuk ke akun Anda" description="Masukan email dan password anda dibawah ini.">
             <Head title="Log in" />
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
+            <form className="flex flex-col w-full gap-2 md:gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Alamat email</Label>
@@ -52,7 +52,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
-                            className='border-white'
+                            className='md:border-white'
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -61,7 +61,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <div className="flex items-center">
                             <Label htmlFor="password">Kata sandi</Label>
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
+                                <TextLink href={route('password.request')} className="ml-auto text-sm md:text-white" tabIndex={5}>
                                     Lupa kata sandi?
                                 </TextLink>
                             )}
@@ -75,7 +75,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Masukan kata sandi"
-                            className='border-white'
+                            className='md:border-white'
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -88,7 +88,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                 <div className="text-muted-foreground text-center text-sm">
                     Belum memiliki akun?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
+                    <TextLink href={route('register')} tabIndex={5} className='md:text-white'>
                         Registrasi
                     </TextLink>
                 </div>

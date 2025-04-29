@@ -157,3 +157,19 @@
         @apply bg-background text-foreground;
     }
 }
+
+@keyframes fall {
+    0% {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .fall {
+    animation: fall 0.5s ease forwards;
+  }
+  

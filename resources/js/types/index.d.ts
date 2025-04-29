@@ -36,6 +36,8 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    phone: string;
+    addres: string;
     email_verified_at: string | null;
     role: UserRole;
     created_at: string;
@@ -46,7 +48,6 @@ export interface User {
 export interface Division {
     id: number;
     name: string;
-    position: string;
     created_at: string;
     updated_at: string;
 }
@@ -56,6 +57,7 @@ export interface Employee {
     user_id: number;
     division_id: number;
     employee_code: number;
+    position: string;
     user: User;
     division: Division;
     created_at: string;
@@ -78,36 +80,45 @@ export interface PageProps<T = unknown> extends SharedData {
 
 export interface UserResponse {
     data: User[];
-    meta?: {
-      total: number;
-      perPage: number;
-      currentPage: number;
-      totalPages: number;
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
     };
-    message?: string; 
+    message?: string;
     status: string;
-  }
+}
 
 export interface DivisionResponse {
     data: Division[];
-    meta?: {
-      total: number;
-      perPage: number;
-      currentPage: number;
-      totalPages: number;
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
     };
-    message?: string; 
+    message?: string;
     status: string;
 }
-  
+
 export interface EmployeeResponse {
     data: Employee[];
-    meta?: {
-      total: number;
-      perPage: number;
-      currentPage: number;
-      totalPages: number;
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
     };
-    message?: string; 
+    message?: string;
     status: string;
-  }
+}
+
+interface DataTableProps<TData, TValue> {
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
+    };
+    searchKey: string;
+    filterBy: string;
+}

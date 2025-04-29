@@ -22,9 +22,10 @@ class EmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id', // validasi bahwa user_id ada di database
+            'user_id' => 'required|exists:users,id',
             'division_id' => 'required|exists:divisions,id',
             'employee_code' => 'required|string|min:10|max:20',
+            'position' => 'required|string|min:1|max:255',
         ];
     }
 }

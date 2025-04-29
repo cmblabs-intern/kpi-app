@@ -10,21 +10,19 @@ import { Label } from '../ui/label';
 type UpdateDivisionForm = {
     id: number;
     name: string;
-    position: string;
 };
 
 type UpdateDivisionFormProps = {
     onSuccess?: () => void;
     id: number;
     name: string;
-    position: string;
 };
 
-const UpdateDivisionForm = ({ onSuccess, id, name, position }: UpdateDivisionFormProps) => {
+const UpdateDivisionForm = ({ onSuccess, id, name }: UpdateDivisionFormProps) => {
     const { data, setData, put, processing, errors, reset } = useForm<Required<UpdateDivisionForm>>({
         id,
         name,
-        position
+        
     });
 
     const submit: FormEventHandler = (e) => {
@@ -33,7 +31,6 @@ const UpdateDivisionForm = ({ onSuccess, id, name, position }: UpdateDivisionFor
         put(route('divisions.update', { id }), {
             onFinish: () => reset('name'),
             onSuccess: () => {
-                console.log('FORM UPDATE | DATA UPDATED: ', data);
                 toast.success('Berhasil memperbarui data divisi!');
                 onSuccess?.();
             },
@@ -58,24 +55,6 @@ const UpdateDivisionForm = ({ onSuccess, id, name, position }: UpdateDivisionFor
                     className="border-white"
                 />
                 <InputError message={errors.name} className="mt-2" />
-            </div>
-            
-            <div className="grid gap-2">
-                <Label htmlFor="position">Nama Divisi</Label>
-                <Input
-                    id="position"
-                    type="name"
-                    required
-                    autoFocus
-                    tabIndex={1}
-                    autoComplete="position"
-                    value={data.position}
-                    onChange={(e) => setData('position', e.target.value)}
-                    disabled={processing}
-                    placeholder={position}
-                    className="border-white"
-                />
-                <InputError message={errors.position} className="mt-2" />
             </div>
 
             <Button type="submit" className="mt-2 w-full bg-sky-600 text-white hover:bg-sky-500/80" tabIndex={2} disabled={processing}>

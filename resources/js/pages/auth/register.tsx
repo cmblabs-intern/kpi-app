@@ -43,7 +43,7 @@ export default function Register() {
     return (
         <AuthLayout title="Buat akun baru" description="Silakan isi data di bawah untuk membuat akun">
             <Head title="Register" />
-            <form className="flex flex-col gap-6" onSubmit={submit}>
+            <form className="flex flex-col gap-2 w-full md:gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nama</Label>
@@ -58,7 +58,7 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Nama lengkap"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
@@ -75,7 +75,7 @@ export default function Register() {
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
                             placeholder="email@example.com"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -92,7 +92,7 @@ export default function Register() {
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
                             placeholder="Masukan kata sandi"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -109,7 +109,7 @@ export default function Register() {
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
                             placeholder="Masukan kata sandi"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
@@ -126,7 +126,7 @@ export default function Register() {
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
                             placeholder="+628123456789"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.phone} />
                     </div>
@@ -143,7 +143,7 @@ export default function Register() {
                             onChange={(e) => setData('address', e.target.value)}
                             disabled={processing}
                             placeholder="Masukan alamat tempat tinggal"
-                            className="border-white"
+                            className="border-black md:border-white"
                         />
                         <InputError message={errors.address} />
                     </div>
@@ -161,7 +161,7 @@ export default function Register() {
 
                 <div className="text-muted-foreground text-center text-sm">
                     Sudah memiliki akun?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
+                    <TextLink href={route('login')} tabIndex={6} className='md:text-white'>
                         Login
                     </TextLink>
                 </div>
