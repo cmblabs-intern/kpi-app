@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model
 {
-    protected $fillable = ['name', 'position'];
+    protected $fillable = ['name'];
 
     public function division()
     {

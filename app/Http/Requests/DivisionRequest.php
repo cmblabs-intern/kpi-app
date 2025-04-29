@@ -23,7 +23,6 @@ class DivisionRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:1|max:255',
-            'position' => 'required|string|min:1|max:255',
         ];
     }
 }

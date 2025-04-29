@@ -10,7 +10,6 @@ import { Label } from '../ui/label';
 type CreateDivisionForm = {
     id: string;
     name: string;
-    position: string;
 };
 
 type CreateDivisionFormProps = {
@@ -21,7 +20,6 @@ const CreateDivisionForm = ({ onSuccess }: CreateDivisionFormProps) => {
     const { data, setData, post, processing, errors, reset } = useForm<Required<CreateDivisionForm>>({
         id: '',
         name: '',
-        position: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -57,24 +55,6 @@ const CreateDivisionForm = ({ onSuccess }: CreateDivisionFormProps) => {
                     className="border-white"
                 />
                 <InputError message={errors.id} className="mt-2" />
-            </div>
-
-            <div className="grid gap-2">
-                <Label htmlFor="position">Jabatan</Label>
-                <Input
-                    id="position"
-                    type="name"
-                    required
-                    autoFocus
-                    tabIndex={1}
-                    autoComplete="position"
-                    value={data.position}
-                    onChange={(e) => setData('position', e.target.value)}
-                    disabled={processing}
-                    placeholder="Manager"
-                    className="border-white"
-                />
-                <InputError message={errors.position} className="mt-2" />
             </div>
 
             <Button type="submit" className="mt-2 w-full cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50" tabIndex={5} disabled={processing}>

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('division_id')->constrained()->onDelete('cascade');
             $table->string('employee_code')->unique();
+            $table->string('position');
             $table->timestamps();
         });
     }

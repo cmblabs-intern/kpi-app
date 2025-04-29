@@ -13,7 +13,6 @@ type DivisionActionProps = {
     division: {
         id: number;
         name: string;
-        position: string;
     };
 };
 
@@ -43,7 +42,6 @@ const DivisionAction = ({ division }: DivisionActionProps) => {
                 setIsDialogOpen={setIsDialogOpen}
             >
                 <UpdateDivisionForm
-                    position={division.position}
                     id={division.id}
                     name={division.name}
                     onSuccess={() => setIsDialogOpen(false)} />

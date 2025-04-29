@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DivisionRequest;
+use App\Http\Resources\DivisionCollection;
 use App\Http\Resources\DivisionResource;
+use App\Models\Division;
 use App\Services\DivisionService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
@@ -20,11 +22,11 @@ class DivisionController extends Controller
     public function index()
     {
         $fields = ['*'];
-        $divisions = $this->divisionService->list($fields);
+        $divisions = $this->divisionService->list($fields, 10);
 
         // Kirim data karyawan sebagai props ke komponen React
         return Inertia::render('divisions/dashboard', [
-            'divisions' => DivisionResource::collection($divisions),
+            'divisions' => new DivisionCollection($divisions),
         ]);
     }
 
@@ -63,10 +65,13 @@ class DivisionController extends Controller
     public function update(DivisionRequest $request, int $id)
     {
         try {
-            $this->divisionService->update($id, $request->validated());
+            $division = $this->divisionService->update($id, $request->validated());
             
             // Redirect ke route yang sudah dinamai 'divisions.index' (/divisions/dashboard)
-            return redirect()->route('divisions.index');
+            return Inertia::render('divisions/dashboard', [
+                'division' => new DivisionResource($division),
+                'divisions' => DivisionResource::collection($this->divisionService->list(['*'])),
+            ], 201);
         } catch (ModelNotFoundException $error) {
             // Jika data tidak ditemukan, kirimkan halaman error
             return response()->json([

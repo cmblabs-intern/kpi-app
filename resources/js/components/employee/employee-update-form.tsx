@@ -1,5 +1,5 @@
-import { DivisionResponse, type Division, type User } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { DivisionResponse, PageProps, type Division, type User } from '@/types';
+import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
@@ -14,6 +14,7 @@ type UpdateEmployeeForm = {
     user_id: number;
     division_id: number;
     employee_code: string;
+    position: string;
 };
 
 type UpdateEmployeeFormProps = {
@@ -23,21 +24,20 @@ type UpdateEmployeeFormProps = {
     division_id: number;
     employee_code: string;
     employee_division: Division;
+    position: string;
     user: User;
-    divisions: unknown;
 };
 
-const UpdateEmployeeForm = ({ id, user_id, division_id, employee_code, employee_division, user, divisions, onSuccess }: UpdateEmployeeFormProps) => {
-  const divisionsResponse = divisions as DivisionResponse;
-  const filteredDivisions = divisionsResponse.data.filter(
-    (division) => division.name !== employee_division.name
-  );
-  
+const UpdateEmployeeForm = ({ id, user_id, division_id, employee_code, employee_division, position, user, onSuccess }: UpdateEmployeeFormProps) => {
+    const { divisions } = usePage<PageProps<{ division: Division[] }>>().props;
+    const divisionResponse = divisions as DivisionResponse;
+
     const { data, setData, put, processing, errors, reset } = useForm<Required<UpdateEmployeeForm>>({
         id,
         user_id,
         division_id,
         employee_code,
+        position,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -46,7 +46,6 @@ const UpdateEmployeeForm = ({ id, user_id, division_id, employee_code, employee_
         put(route('employees.update', { id }), {
             onFinish: () => reset('employee_code'),
             onSuccess: () => {
-                console.log('FORM UPDATE | DATA UPDATED: ', data);
                 toast.success('Berhasil memperbarui data divisi!');
                 onSuccess?.();
             },
@@ -66,27 +65,40 @@ const UpdateEmployeeForm = ({ id, user_id, division_id, employee_code, employee_
             </div>
 
             <div className="grid gap-2">
-                <Label htmlFor="position">Jabatan</Label>
-                <Select
-                    onValueChange={(value) => {
-                        setData('division_id', Number(value));
-                    }}
-                >
+                <Label htmlFor="division">Divisi</Label>
+                <Select onValueChange={(value) => setData('division_id', Number(value))}>
                     <SelectTrigger>
                         <SelectValue placeholder={employee_division.name} />
                     </SelectTrigger>
                     <SelectContent>
-                        {filteredDivisions.length > 0 ? (
-                            filteredDivisions.map((division) => (
+                        {divisionResponse && divisionResponse.data.length > 0 ? (
+                            divisionResponse.data.map((division) => (
                                 <SelectItem key={division.id} value={division.id.toString()}>
                                     {division.name}
                                 </SelectItem>
                             ))
                         ) : (
-                            <div className="text-muted-foreground px-2 py-1 text-center text-sm">Data divisi tidak tersedia</div>
+                            <SelectItem value="">No data division</SelectItem>
                         )}
                     </SelectContent>
                 </Select>
+            </div>
+
+            <div className="grid gap-2">
+                <Label htmlFor="position">Jabatan</Label>
+                <Input
+                    id="position"
+                    type="name"
+                    required
+                    autoFocus
+                    tabIndex={1}
+                    autoComplete="position"
+                    value={data.position}
+                    onChange={(e) => setData('position', e.target.value)}
+                    disabled={processing}
+                    placeholder={position}
+                    className="border-white"
+                />
                 <InputError message={errors.division_id} className="mt-2" />
             </div>
 
