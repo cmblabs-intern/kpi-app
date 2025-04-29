@@ -22,6 +22,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = {
     name: string;
     email: string;
+    address: string;
+    phone: string;
 }
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
@@ -30,6 +32,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
         name: auth.user.name,
         email: auth.user.email,
+        address: auth.user.addres,
+        phone: auth.user.phone
     });
 
     const submit: FormEventHandler = (e) => {
@@ -39,6 +43,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             preserveScroll: true,
         });
     };
+
+    console.log(auth.user)
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -50,7 +56,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">Nama</Label>
 
                             <Input
                                 id="name"
@@ -59,14 +65,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 onChange={(e) => setData('name', e.target.value)}
                                 required
                                 autoComplete="name"
-                                placeholder="Full name"
+                                placeholder="Nama lengkap"
                             />
 
                             <InputError className="mt-2" message={errors.name} />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
+                            <Label htmlFor="email">Alamat email</Label>
 
                             <Input
                                 id="email"
@@ -76,7 +82,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 onChange={(e) => setData('email', e.target.value)}
                                 required
                                 autoComplete="username"
-                                placeholder="Email address"
+                                placeholder="Alamat email"
                             />
 
                             <InputError className="mt-2" message={errors.email} />
@@ -85,24 +91,58 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm">
-                                    Your email address is unverified.{' '}
+                                    Alamat email belum terverifikasi.{' '}
                                     <Link
                                         href={route('verification.send')}
                                         method="post"
                                         as="button"
                                         className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                     >
-                                        Click here to resend the verification email.
+                                        Klik disini untuk mengirim email verifikasi.
                                     </Link>
                                 </p>
 
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">
-                                        A new verification link has been sent to your email address.
+                                        Link verifikasi telah dikirim ke email.
                                     </div>
                                 )}
                             </div>
                         )}
+                        
+                        <div className="grid gap-2">
+                            <Label htmlFor="address">Alamat tempat tinggal</Label>
+
+                            <Input
+                                id="address"
+                                type="address"
+                                className="mt-1 block w-full"
+                                value={data.address}
+                                onChange={(e) => setData('address', e.target.value)}
+                                required
+                                autoComplete="address"
+                                placeholder="Alamat tempat tinggal"
+                            />
+
+                            <InputError className="mt-2" message={errors.address} />
+                        </div>
+                        
+                        <div className="grid gap-2">
+                            <Label htmlFor="phone">Nomor handphone</Label>
+
+                            <Input
+                                id="phone"
+                                type="phone"
+                                className="mt-1 block w-full"
+                                value={data.phone}
+                                onChange={(e) => setData('phone', e.target.value)}
+                                required
+                                autoComplete="phone"
+                                placeholder="Nomor handphone"
+                            />
+
+                            <InputError className="mt-2" message={errors.phone} />
+                        </div>
 
                         <div className="flex items-center gap-4">
                             <Button disabled={processing}>Save</Button>
