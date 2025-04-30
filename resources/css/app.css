@@ -75,6 +75,9 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+    .apexcharts-menu-item {
+        color: black;
+    }
 }
 
 :root {

@@ -34,7 +34,6 @@ export default function Dashboard() {
         );
     }
 
-    console.log(division);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

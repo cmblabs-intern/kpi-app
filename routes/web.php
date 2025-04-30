@@ -17,10 +17,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('lol');
 });
 
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/employee.php';
 require __DIR__.'/division.php';
 require __DIR__.'/notification.php';
-
+require __DIR__ . '/report.php';
 
