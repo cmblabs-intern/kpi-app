@@ -34,8 +34,6 @@ export default function Dashboard() {
         );
     }
 
-    console.log('DASHBOARD DIVISI | Data: ', division)
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Divisi" />
