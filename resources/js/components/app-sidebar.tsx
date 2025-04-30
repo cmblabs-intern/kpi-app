@@ -2,9 +2,9 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type SharedData, type NavItem } from '@/types';
+import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Users, LayoutGrid, Building2 } from 'lucide-react';
+import { BookOpen, Building2, ClipboardPenLine, LayoutGrid, Users } from 'lucide-react';
 
 const mainNavItems: (NavItem & { onlyAdmin?: boolean })[] = [
     {
@@ -16,18 +16,22 @@ const mainNavItems: (NavItem & { onlyAdmin?: boolean })[] = [
         title: 'Karyawan',
         href: '/employees',
         icon: Users,
-        onlyAdmin: true
+        onlyAdmin: true,
     },
     {
         title: 'Divisi',
         href: '/divisions',
         icon: Building2,
-        onlyAdmin: true
+        onlyAdmin: true,
+    },
+    {
+        title: 'Laporan',
+        href: '/report',
+        icon: ClipboardPenLine,
     },
 ];
 
 const footerNavItems: NavItem[] = [
-    
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits',
@@ -44,9 +48,9 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch className='border flex items-center gap-3 py-2'>
-                                <img src="/cmlabs.ico" alt="Logo cm labs" className='object-cover h-full rounded-sm' />
-                                <p className='font-semibold '>CM LABS</p>
+                            <Link href="/dashboard" prefetch className="flex items-center gap-3 border py-2">
+                                <img src="/cmlabs.ico" alt="Logo cm labs" className="h-full rounded-sm object-cover" />
+                                <p className="font-semibold">CM LABS</p>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -54,7 +58,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems.filter(item => !item.onlyAdmin || auth.user.role === 'admin')} />
+                <NavMain items={mainNavItems.filter((item) => !item.onlyAdmin || auth.user.role === 'admin')} />
             </SidebarContent>
 
             <SidebarFooter>

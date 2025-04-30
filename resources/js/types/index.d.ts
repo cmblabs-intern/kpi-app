@@ -64,6 +64,15 @@ export interface Employee {
     updated_at: string;
 }
 
+export interface KpiAssesments {
+    id: number;
+    employee_id: number;
+    month: string;
+    total_score: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export enum UserRole {
     Admin = 'admin',
     User = 'user',
@@ -80,10 +89,15 @@ export interface PageProps<T = unknown> extends SharedData {
 
 export interface UserResponse {
     data: User[];
+
+    meta?: {
+        total: number;
+        perPage: number;
+        currentPage: number;
+        totalPages: number;
     paging?: {
         current_page: number;
         size: number;
-        total_page: number;
     };
     message?: string;
     status: string;
@@ -91,6 +105,12 @@ export interface UserResponse {
 
 export interface DivisionResponse {
     data: Division[];
+    meta?: {
+        total: number;
+        perPage: number;
+        currentPage: number;
+        totalPages: number;
+
     paging?: {
         current_page: number;
         size: number;
@@ -102,14 +122,34 @@ export interface DivisionResponse {
 
 export interface EmployeeResponse {
     data: Employee[];
+
+    meta?: {
+        total: number;
+        perPage: number;
+        currentPage: number;
+        totalPages: number;
+
     paging?: {
         current_page: number;
         size: number;
         total_page: number;
+
     };
     message?: string;
     status: string;
 }
+
+
+export interface KpiAssesmentsResponse {
+    data: KpiAssesments[];
+    meta?: {
+        total: number;
+        perPage: number;
+        currentPage: number;
+        totalPages: number;
+    };
+    message?: string;
+    status: string;
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
