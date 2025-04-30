@@ -5,9 +5,15 @@ use App\Models\Division;
 
 class DivisionRepository
 {
-  public function list(array $fields)
+  public function list(array $fields, ?int $perPage = null)
   {
-    return Division::select($fields)->latest()->paginate(10);
+    $query = Division::select($fields)->latest();
+
+    if ($perPage) {
+        return $query->paginate($perPage);
+    }
+
+    return $query->get();
   }
 
   public function getById(int $id, array $fields)
@@ -30,6 +36,6 @@ class DivisionRepository
   public function delete(int $id)
   {
     $division = Division::findOrFail($id);
-    $division->delete($id);
+    $division->delete();
   }
 }

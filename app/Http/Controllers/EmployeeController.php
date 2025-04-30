@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
 use App\Http\Resources\DivisionResource;
+use App\Http\Resources\EmployeeCollection;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Models\Division;
@@ -35,7 +36,7 @@ class EmployeeController extends Controller
         return Inertia::render('employees/dashboard', [
             'divisions' => DivisionResource::collection($divisions),
             'users' => UserResource::collection($users),
-            'employees' => EmployeeResource::collection($employees),
+            'employees' => new EmployeeCollection($employees),
         ]);
     }
 

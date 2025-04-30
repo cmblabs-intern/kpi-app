@@ -19,6 +19,7 @@ class EmployeeResource extends JsonResource
             'user_id' => $this->user_id,
             'division_id' => $this->division_id,
             'employee_code' => $this->employee_code,
+            'position' => $this->position,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'user' => [
@@ -29,7 +30,6 @@ class EmployeeResource extends JsonResource
             ],
             'division' => [
                 'name' => optional($this->division)->name,
-                'position' => optional($this->division)->position
             ]
         ];
     }

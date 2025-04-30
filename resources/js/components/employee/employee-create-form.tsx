@@ -13,6 +13,7 @@ type CreateEmployeeForm = {
     user_id: string;
     division_id: string;
     employee_code: string;
+    position: string;
 };
 
 type CreateEmployeeFormProps = {
@@ -32,6 +33,7 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
         user_id: '',
         division_id: '',
         employee_code: '',
+        position: '',
     });
 
     useEffect(() => {
@@ -91,6 +93,23 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                 )}
 
                 <div className="grid gap-2">
+                    <Label htmlFor="division">Divisi</Label>
+                    <Select onValueChange={(value) => setData('division_id', value)}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Pilih divisi" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {divisions.data.map((division) => (
+                                <SelectItem key={division.id} value={division.id.toString()}>
+                                    {division.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <InputError message={errors.division_id} className="mt-2" />
+                </div>
+
+                <div className="grid gap-2">
                     <Label htmlFor="employee_code">Kode Karyawan</Label>
                     <Input
                         id="employee_code"
@@ -106,6 +125,24 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                         className="border-white"
                     />
                     <InputError message={errors.employee_code} className="mt-2" />
+                </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="position">Jabatan</Label>
+                    <Input
+                        id="position"
+                        type="name"
+                        required
+                        autoFocus
+                        tabIndex={1}
+                        autoComplete="position"
+                        value={data.position}
+                        onChange={(e) => setData('position', e.target.value)}
+                        disabled={processing}
+                        placeholder="Manager"
+                        className="border-white"
+                    />
+                    <InputError message={errors.position} className="mt-2" />
                 </div>
 
                 <Button

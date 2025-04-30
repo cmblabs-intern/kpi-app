@@ -10,6 +10,7 @@ class Employee extends Model
         'user_id',
         'division_id',
         'employee_code',
+        'position'
     ];
 
     public function user() {
