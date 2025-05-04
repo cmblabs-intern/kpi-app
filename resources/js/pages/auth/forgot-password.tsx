@@ -37,7 +37,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 </div>
             )}
 
-            <div className="space-y-6">
+            <div className="space-y-6 w-full">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Alamat email</Label>
@@ -64,7 +64,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 </form>
 
                 <div className="text-muted-foreground space-x-1 text-center text-sm">
-                    <span>Kembali ke</span>
+                    <span>Kembali ke halaman</span>
                     <TextLink href={route('login')}>login</TextLink>
                 </div>
             </div>

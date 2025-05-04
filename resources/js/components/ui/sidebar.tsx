@@ -268,7 +268,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon className='size-6'/>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -451,7 +451,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
     <ul
       data-slot="sidebar-menu"
       data-sidebar="menu"
-      className={cn("flex w-full min-w-0 flex-col gap-1", className)}
+      className={cn("flex min-w-0 flex-col gap-1", className)}
       {...props}
     />
   )

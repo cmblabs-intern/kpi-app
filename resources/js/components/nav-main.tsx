@@ -2,25 +2,28 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, Sideba
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 
-export function NavMain({ items = [] }: { items: NavItem[] }) {
+export function NavMain({ items = [], url }: { items: NavItem[]; url: string }) {
     const page = usePage();
     return (
         <SidebarGroup className="px-2 py-0">
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-                {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton  
-                            asChild isActive={item.href === page.url}
-                            tooltip={{ children: item.title }}
-                        >
-                            <Link href={item.href} prefetch>
-                                {item.icon && <item.icon />}
-                                <span>{item.title}</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
+                {items.map((item) => {
+                    const isActive = url.startsWith(item.href);
+                    return (
+                        <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton asChild isActive={item.href === page.url} tooltip={{ children: item.title }}>
+                                <Link
+                                    href={item.href}
+                                    prefetch
+                                >
+                                    {item.icon && <item.icon className={isActive ? 'text-sky-500' : 'text-accent-foreground'}/>}
+                                    <span className={`hover:bg-accent rounded-sm px-4 py-1 ${isActive ? 'text-sky-500' : 'text-accent-foreground'}`}>{item.title}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    );
+                })}
             </SidebarMenu>
         </SidebarGroup>
     );

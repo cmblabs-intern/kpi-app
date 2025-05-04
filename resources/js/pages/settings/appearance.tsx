@@ -1,28 +1,19 @@
 import { Head } from '@inertiajs/react';
 
-
 import HeadingSmall from '@/components/heading-small';
-import { type BreadcrumbItem } from '@/types';
 
+import AppearanceToggleTab from '@/components/appearance-tabs';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import AppearanceToggleTab from '@/components/appearance-tabs';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: '/settings/appearance',
-    },
-];
 
 export default function Appearance() {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Appearance settings" />
+        <AppLayout>
+            <Head title="Pengaturan tampilan" />
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
+                    <HeadingSmall title="Pengaturan tampilan" description="Ubah tampilan akun anda" />
                     <AppearanceToggleTab />
                 </div>
             </SettingsLayout>

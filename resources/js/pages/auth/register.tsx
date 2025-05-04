@@ -34,7 +34,7 @@ export default function Register() {
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
             onSuccess: () => {
-                console.log('REGISTER FORM | Data baru sukses dibuat: ', data)
+                console.log('REGISTER FORM | Data baru sukses dibuat: ', data);
                 toast.success('Berhasil login');
             },
         });
@@ -43,7 +43,7 @@ export default function Register() {
     return (
         <AuthLayout title="Buat akun baru" description="Silakan isi data di bawah untuk membuat akun">
             <Head title="Register" />
-            <form className="flex flex-col gap-2 w-full md:gap-6" onSubmit={submit}>
+            <form className="flex w-full flex-col gap-2 md:gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nama</Label>
@@ -161,7 +161,7 @@ export default function Register() {
 
                 <div className="text-muted-foreground text-center text-sm">
                     Sudah memiliki akun?{' '}
-                    <TextLink href={route('login')} tabIndex={6} className='md:text-white'>
+                    <TextLink href={route('login')} tabIndex={6} className="md:text-white">
                         Login
                     </TextLink>
                 </div>

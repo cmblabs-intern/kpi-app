@@ -17,8 +17,12 @@ class DivisionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'created_at' => $this->created_at ? $this->created_at->toDateTimeString() : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->toDateTimeString() : null,
+            'created_at' => $this->created_at 
+            ? $this->created_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
+            : null,
+            'updated_at' => $this->updated_at 
+            ? $this->updated_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
+            : null,
         ];
     }
 }
