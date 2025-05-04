@@ -1,13 +1,73 @@
-import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
+import { SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import AppLogoIcon from './app-logo-icon';
+import { NavUser } from './nav-user';
+import Notification from './notification';
 
-export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
+const navbars = [
+    {
+        id: 1,
+        name: 'Dashboard',
+        href: '/dashboard',
+        role: ['user', 'admin'],
+    },
+    {
+        id: 2,
+        name: 'Karyawan',
+        href: '/employees/dashboard',
+        role: ['admin'],
+    },
+    {
+        id: 3,
+        name: 'Divisi',
+        href: '/divisions/dashboard',
+        role: ['admin'],
+    },
+    {
+        id: 4,
+        name: 'Nilai KPI',
+        href: '/kpi/my-scores',
+        role: ['user']
+    }
+];
+
+export function AppSidebarHeader() {
+    const { url } = usePage();
+    const { auth } = usePage<SharedData>().props;
+    const role = auth.user.role;
     return (
-        <header className="border-sidebar-border/50 flex h-16 shrink-0 items-center gap-2 border-b px-6 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:px-4">
-            <div className="flex items-center gap-2">
-                <SidebarTrigger className="-ml-1" />
-                <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <header className="border-sidebar-border/50 flex shrink-0 items-center gap-2 border-b py-2 transition-[width,height] ease-linear">
+            <div className="flex w-full items-center justify-between gap-6 px-4">
+                <SidebarTrigger className="-ml-1 flex md:hidden" />
+
+                <div className="hidden items-center justify-center gap-x-4 rounded-md px-4 md:flex">
+                    <AppLogoIcon className="size-7 fill-current" />
+                    <h1 className="items-center text-xl font-semibold text-sky-500">CMLABS</h1>
+                </div>
+
+                <nav className="hidden w-full md:block">
+                    <ul className="flex justify-center gap-x-6">
+                        {navbars.map((nav) => {
+                            const isActive = url.startsWith(nav.href);
+                            const hasAccess = nav.role.includes(role);
+
+                            if (!hasAccess) return null;
+                            return (
+                                <li key={nav.id}>
+                                    <Link
+                                        href={nav.href}
+                                        className={`hover:bg-accent rounded-sm ${isActive ? 'text-sky-500' : 'text-accent-foreground'}`}
+                                    >
+                                        {nav.name}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </nav>
+                {role === 'user' ? <Notification /> : ''}
+                <NavUser />
             </div>
         </header>
     );

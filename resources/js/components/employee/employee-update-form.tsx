@@ -56,12 +56,12 @@ const UpdateEmployeeForm = ({ id, user_id, division_id, employee_code, employee_
         <form className="flex flex-col gap-6" onSubmit={submit}>
             <div className="grid gap-2">
                 <Label>Alamat Email</Label>
-                <Input value={user.email} readOnly className="border-gray-600" />
+                <Input value={user.email} readOnly disabled className="border-gray-600" />
             </div>
 
             <div className="grid gap-2">
                 <Label>Nama</Label>
-                <Input value={user.name} readOnly className="border-gray-600" />
+                <Input value={user.name} readOnly disabled className="border-gray-600" />
             </div>
 
             <div className="grid gap-2">

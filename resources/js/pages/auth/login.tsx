@@ -35,10 +35,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Masuk ke akun Anda" description="Masukan email dan password anda dibawah ini.">
+        <AuthLayout title="Masuk ke akun Anda" description="Masukan email dan kata sandi anda dibawah ini.">
             <Head title="Log in" />
 
-            <form className="flex flex-col w-full gap-2 md:gap-6" onSubmit={submit}>
+            <form className="flex w-full flex-col gap-2 md:gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Alamat email</Label>
@@ -52,7 +52,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
-                            className='md:border-white'
+                            className="md:border-white"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -75,12 +75,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Masukan kata sandi"
-                            className='md:border-white'
+                            className="md:border-white"
                         />
                         <InputError message={errors.password} />
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full bg-sky-600 hover:bg-sky-500/50 text-white" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-4 w-full bg-sky-600 text-white hover:bg-sky-500/50" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
@@ -88,7 +88,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                 <div className="text-muted-foreground text-center text-sm">
                     Belum memiliki akun?{' '}
-                    <TextLink href={route('register')} tabIndex={5} className='md:text-white'>
+                    <TextLink href={route('register')} tabIndex={5} className="md:text-white">
                         Registrasi
                     </TextLink>
                 </div>
