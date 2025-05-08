@@ -2,24 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
+use App\Http\Resources\NotificationResource;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
+    private $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     /**
      * Menampilkan semua notifikasi untuk user yang sedang login.
      */
     public function index()
     {
-        $notifications = Notification::where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Gunakan NotificationService untuk mendapatkan notifikasi berdasarkan user yang sedang login
+        $notifications = $this->notificationService->getAllNotificationsByUser(Auth::id());
 
         return Inertia::render('Notifications/Index', [
-            'notifications' => $notifications,
+            'notifications' => NotificationResource::collection($notifications),
         ]);
     }
 
@@ -28,12 +35,11 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        $notification = Notification::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        // Dapatkan notifikasi berdasarkan ID dan user yang sedang login
+        $notification = $this->notificationService->getNotificationById($id, Auth::id());
 
         return Inertia::render('Notifications/Show', [
-            'notification' => $notification,
+            'notification' => new NotificationResource($notification),
         ]);
     }
 
@@ -42,13 +48,8 @@ class NotificationController extends Controller
      */
     public function markAsRead($id)
     {
-        $notification = Notification::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $notification->update([
-            'is_read' => true,
-        ]);
+        // Panggil service untuk menandai notifikasi sebagai dibaca
+        $this->notificationService->updateNotificationStatus($id, Auth::id(), ['is_read' => true]);
 
         return redirect()->back()->with('success', 'Notifikasi telah ditandai sebagai dibaca.');
     }
@@ -58,11 +59,8 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        $notification = Notification::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $notification->delete();
+        // Panggil service untuk menghapus notifikasi
+        $this->notificationService->deleteNotification($id, Auth::id());
 
         return redirect()->back()->with('success', 'Notifikasi telah dihapus.');
     }
@@ -72,19 +70,20 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string',
             'type' => 'required|in:in-app,email',
         ]);
 
-        $notification = Notification::create([
-            'user_id' => Auth::id(),
-            'title' => $validated['title'],
-            'message' => $validated['message'],
-            'type' => $validated['type'],
-        ]);
+        // Masukkan user yang sedang login ke dalam data notifikasi
+        $validated['user_id'] = Auth::id();
+
+        // Gunakan service untuk membuat notifikasi baru
+        $this->notificationService->createNotification($validated);
 
         return redirect()->route('notifications.index')->with('success', 'Notifikasi berhasil dibuat.');
     }
 }
+

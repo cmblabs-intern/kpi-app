@@ -19,7 +19,7 @@ class DivisionRepository
   public function getById(int $id, array $fields)
   {
     return Division::select($fields)->findOrFail($id);
-  }
+  } 
   
   public function create(array $data)
   {
