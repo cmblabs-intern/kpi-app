@@ -70,13 +70,19 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                             <SelectValue placeholder="Pilih email" />
                         </SelectTrigger>
                         <SelectContent>
-                            {users?.data
-                                .filter((user) => user.role !== 'admin')
-                                .map((user) => (
-                                    <SelectItem key={user.email} value={user.email}>
-                                        {user.email}
-                                    </SelectItem>
-                                ))}
+                            {users?.data && users.data.length > 0 ? (
+                                users.data
+                                    .filter((user) => user.role !== 'admin')
+                                    .map((user) => (
+                                        <SelectItem key={user.email} value={user.email}>
+                                            {user.email}
+                                        </SelectItem>
+                                    ))
+                            ) : (
+                                <SelectItem value="no-division" disabled>
+                                    Belum ada data pengguna
+                                </SelectItem>
+                            )}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.user_id} className="mt-2" />
@@ -96,11 +102,17 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                             <SelectValue placeholder="Pilih divisi" />
                         </SelectTrigger>
                         <SelectContent>
-                            {divisions?.data.map((division) => (
-                                <SelectItem key={division.id} value={division.id.toString()}>
-                                    {division.name}
+                            {divisions?.data && divisions.data.length > 0 ? (
+                                divisions.data.map((division) => (
+                                    <SelectItem key={division.id} value={division.id.toString()}>
+                                        {division.name}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                                <SelectItem value="no-division" disabled>
+                                    Belum ada data divisi
                                 </SelectItem>
-                            ))}
+                            )}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.division_id} className="mt-2" />
