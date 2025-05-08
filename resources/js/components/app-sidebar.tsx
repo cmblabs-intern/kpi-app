@@ -1,6 +1,7 @@
 import { NavMain } from '@/components/nav-main';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem, type SharedData } from '@/types';
+import { type NavItem } from '@/types';
+import { type SharedData } from '@/types/inertia';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Building2, ClipboardPenLine, LayoutGrid, Users } from 'lucide-react';
 
@@ -23,6 +24,12 @@ const mainNavItems: (NavItem & { onlyAdmin?: boolean })[] = [
         onlyAdmin: true,
     },
     {
+        title: 'KPI Metrics',
+        href: '/kpi-metrics',
+        icon: BookOpen,
+        onlyAdmin: true,
+    },
+    {
         title: 'Laporan',
         href: '/report',
         icon: ClipboardPenLine,
@@ -30,8 +37,7 @@ const mainNavItems: (NavItem & { onlyAdmin?: boolean })[] = [
 ];
 
 export function AppSidebar() {
-    const { auth } = usePage<SharedData>().props;
-    const { url } = usePage();
+    const { auth, url, user } = usePage<SharedData>().props;
 
     return (
         <Sidebar collapsible="icon" variant="inset" className='block md:hidden'>
@@ -49,7 +55,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain url={url} items={mainNavItems.filter((item) => !item.onlyAdmin || auth.user.role === 'admin')} />
+                <NavMain url={url} items={mainNavItems.filter((item) => !item.onlyAdmin || (user?.role === 'admin'))} />
             </SidebarContent>
         </Sidebar>
     );

@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 
 interface AppLayoutProps {
     children: ReactNode;
+    breadcrumbs?: { title: string; href: string; }[];
 }
 
 export default ({ children, ...props }: AppLayoutProps) => (
