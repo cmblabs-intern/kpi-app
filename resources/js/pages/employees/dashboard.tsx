@@ -3,15 +3,8 @@ import { employeeColumns } from '@/components/employee/employee-colums';
 import EmployeeModal from '@/components/employee/employee-modal';
 import Heading from '@/components/heading';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Employee, type EmployeeResponse, type PageProps } from '@/types';
+import { type Employee, type EmployeeResponse, type PageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard Karyawan',
-        href: '/employees/dashboard',
-    },
-];
 
 export default function EmployeeDashboard() {
     const { employees } = usePage<PageProps<{ employee: Employee[] }>>().props;
@@ -21,10 +14,8 @@ export default function EmployeeDashboard() {
         index: index + 1,
     }));
 
-    console.log(employees)
-
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout>
             <Head title="Dashboard Karyawan" />
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <div className="flex flex-col md:flex-row gap-y-4 items-center justify-between border-b-[1px] py-2">
@@ -34,8 +25,7 @@ export default function EmployeeDashboard() {
                 <DataTable
                     columns={employeeColumns}
                     data={employeeData}
-                    searchKey="name"
-                    filterBy="nama karyawan"
+                    service="karyawan"
                     paging={employeesResponse.paging}
                 />
             </div>

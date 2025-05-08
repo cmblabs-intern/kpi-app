@@ -20,8 +20,12 @@ class EmployeeResource extends JsonResource
             'division_id' => $this->division_id,
             'employee_code' => $this->employee_code,
             'position' => $this->position,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at 
+            ? $this->created_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
+            : null,
+            'updated_at' => $this->updated_at 
+            ? $this->updated_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
+            : null,
             'user' => [
                 'name' => optional($this->user)->name,
                 'email' => optional($this->user)->email,

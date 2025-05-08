@@ -51,7 +51,6 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log('EMPLOYEE FORM | Data yang dikirim:', data);
         post(route('employees.store'), {
             onFinish: () => reset('employee_code'),
             onSuccess: () => {
@@ -60,10 +59,6 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
             },
         });
     };
-
-    if (!users || !divisions) {
-        return <p className="text-red-500">Data pengguna atau divisi tidak tersedia.</p>;
-    }
 
     return (
         <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -75,11 +70,13 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                             <SelectValue placeholder="Pilih email" />
                         </SelectTrigger>
                         <SelectContent>
-                            {users.data.map((user) => (
-                                <SelectItem key={user.email} value={user.email}>
-                                    {user.email}
-                                </SelectItem>
-                            ))}
+                            {users?.data
+                                .filter((user) => user.role !== 'admin')
+                                .map((user) => (
+                                    <SelectItem key={user.email} value={user.email}>
+                                        {user.email}
+                                    </SelectItem>
+                                ))}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.user_id} className="mt-2" />
@@ -99,7 +96,7 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                             <SelectValue placeholder="Pilih divisi" />
                         </SelectTrigger>
                         <SelectContent>
-                            {divisions.data.map((division) => (
+                            {divisions?.data.map((division) => (
                                 <SelectItem key={division.id} value={division.id.toString()}>
                                     {division.name}
                                 </SelectItem>

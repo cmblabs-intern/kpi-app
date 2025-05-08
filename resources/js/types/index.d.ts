@@ -20,6 +20,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    className?: string;
 }
 
 export interface SharedData {
@@ -90,14 +91,10 @@ export interface PageProps<T = unknown> extends SharedData {
 export interface UserResponse {
     data: User[];
 
-    meta?: {
-        total: number;
-        perPage: number;
-        currentPage: number;
-        totalPages: number;
     paging?: {
         current_page: number;
         size: number;
+        total_page: number;
     };
     message?: string;
     status: string;
@@ -105,12 +102,6 @@ export interface UserResponse {
 
 export interface DivisionResponse {
     data: Division[];
-    meta?: {
-        total: number;
-        perPage: number;
-        currentPage: number;
-        totalPages: number;
-
     paging?: {
         current_page: number;
         size: number;
@@ -122,23 +113,14 @@ export interface DivisionResponse {
 
 export interface EmployeeResponse {
     data: Employee[];
-
-    meta?: {
-        total: number;
-        perPage: number;
-        currentPage: number;
-        totalPages: number;
-
     paging?: {
         current_page: number;
         size: number;
         total_page: number;
-
     };
     message?: string;
     status: string;
 }
-
 
 export interface KpiAssesmentsResponse {
     data: KpiAssesments[];
@@ -150,6 +132,7 @@ export interface KpiAssesmentsResponse {
     };
     message?: string;
     status: string;
+}
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -159,8 +142,7 @@ interface DataTableProps<TData, TValue> {
         size: number;
         total_page: number;
     };
-    searchKey: string;
-    filterBy: string;
+    service: string;
 }
 
 
