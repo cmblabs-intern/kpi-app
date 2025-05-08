@@ -17,7 +17,7 @@ type ProfileForm = {
     email: string;
     address: string;
     phone: string;
-}
+};
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
@@ -26,7 +26,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         name: auth.user.name,
         email: auth.user.email,
         address: auth.user.addres,
-        phone: auth.user.phone
+        phone: auth.user.phone,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -37,7 +37,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         });
     };
 
-    console.log(auth.user)
+    console.log(auth.user);
 
     return (
         <AppLayout>
@@ -96,13 +96,11 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 </p>
 
                                 {status === 'verification-link-sent' && (
-                                    <div className="mt-2 text-sm font-medium text-green-600">
-                                        Link verifikasi telah dikirim ke email.
-                                    </div>
+                                    <div className="mt-2 text-sm font-medium text-green-600">Link verifikasi telah dikirim ke email.</div>
                                 )}
                             </div>
                         )}
-                        
+
                         <div className="grid gap-2">
                             <Label htmlFor="address">Alamat tempat tinggal</Label>
 
@@ -119,7 +117,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                             <InputError className="mt-2" message={errors.address} />
                         </div>
-                        
+
                         <div className="grid gap-2">
                             <Label htmlFor="phone">Nomor handphone</Label>
 
@@ -153,7 +151,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     </form>
                 </div>
 
-                <DeleteUser />
+                {auth.user.role !== 'admin' ? <DeleteUser /> : <></>}
             </SettingsLayout>
         </AppLayout>
     );

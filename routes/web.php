@@ -12,9 +12,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     
-    Route::get('lol', function () {
-        return Inertia::render('lol');
-    })->name('lol');
+    Route::get('kpi/my-scores', function () {
+        return Inertia::render('kpi/my-scores');
+    })->name('kpi/my-scores');
 });
 
 
