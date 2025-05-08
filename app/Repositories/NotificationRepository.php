@@ -21,6 +21,25 @@ class NotificationRepository
     }
 
     /**
+     * Mendapatkan semua data notifikasi.
+     *
+     * @param array $fields
+     * @param int $perPage
+     * @return Collection
+     */
+
+    public function list(array $fields, ?int $perPage = null)
+  {
+    $query = Notification::select($fields)->latest();
+
+    if ($perPage) {
+        return $query->paginate($perPage);
+    }
+
+    return $query->get();
+  }
+
+    /**
      * Mendapatkan semua notifikasi untuk user tertentu.
      *
      * @param int $userId

@@ -1,13 +1,8 @@
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import LoginForm from '@/components/auth/login-form';
 
 type LoginForm = {
     email: string;
@@ -36,63 +31,16 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     return (
         <AuthLayout title="Masuk ke akun Anda" description="Masukan email dan kata sandi anda dibawah ini.">
-            <Head title="Log in" />
+            <Head title="Login" />
 
-            <form className="flex w-full flex-col gap-2 md:gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Alamat email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
-                            className="md:border-white"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Kata sandi</Label>
-                            {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm md:text-white" tabIndex={5}>
-                                    Lupa kata sandi?
-                                </TextLink>
-                            )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Masukan kata sandi"
-                            className="md:border-white"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full bg-sky-600 text-white hover:bg-sky-500/50" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
-                </div>
-
-                <div className="text-muted-foreground text-center text-sm">
-                    Belum memiliki akun?{' '}
-                    <TextLink href={route('register')} tabIndex={5} className="md:text-white">
-                        Registrasi
-                    </TextLink>
-                </div>
-            </form>
+            <LoginForm
+                data={data}
+                setData={setData}
+                errors={errors}
+                processing={processing}
+                canResetPassword={canResetPassword}
+                submit={submit}
+            />
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
         </AuthLayout>

@@ -24,21 +24,21 @@ const UserDetailDropdown = ({ email, phone, address }: { email: string; phone: s
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex flex-col items-start text-xs md:text-sm">
                     <div className="flex w-full items-center gap-2">
-                        <Mail className="h-4 w-4 text-white" />
+                        <Mail className="h-4 w-4 text-muted-foreground dark:text-white" />
                         <span className="text-muted-foreground">Alamat Email:</span>
                     </div>
                     <span className="text-sm font-medium">{email}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex flex-col items-start text-xs md:text-sm">
                     <div className="flex w-full items-center gap-2">
-                        <Phone className="h-4 w-4 text-white" />
+                        <Phone className="h-4 w-4 text-muted-foreground dark:text-white" />
                         <span className="text-muted-foreground">Nomor Handphone:</span>
                     </div>
                     <span className="text-sm font-medium">{phone}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex flex-col items-start text-xs md:text-sm">
                     <div className="flex w-full items-center gap-2">
-                        <MapPinHouse className="h-4 w-4 text-white" />
+                        <MapPinHouse className="h-4 w-4 text-muted-foreground dark:text-white" />
                         <span className="text-muted-foreground">Alamat Tempat Tinggal:</span>
                     </div>
                     <span className="text-sm font-medium">{address}</span>

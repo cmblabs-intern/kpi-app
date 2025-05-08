@@ -48,6 +48,8 @@ export default function ReportDashboard() {
                 <div className="flex items-center justify-between">
                     <Heading title="Laporan Karyawan" description="Laporan KPI Karyawan Perusahaan" />
                 </div>
+                <div className='bg-neutral-800 rounded-lg p-4'>
+
                 <Chart
                     type="bar"
                     height={350}
@@ -85,6 +87,7 @@ export default function ReportDashboard() {
                         },
                     }}
                 />
+                </div>
             </div>
         </AppLayout>
     );

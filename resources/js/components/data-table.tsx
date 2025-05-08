@@ -95,7 +95,7 @@ export function DataTable<TData, TValue>({ columns, data, paging, service }: Dat
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.id} className='font-bold'>
                                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                     </TableHead>
                                 ))}
@@ -125,13 +125,13 @@ export function DataTable<TData, TValue>({ columns, data, paging, service }: Dat
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
                 <Button variant="outline" size="sm" onClick={handlePrevPage} disabled={!paging || paging.current_page <= 1}>
-                    Previous
+                    Sebelumnya
                 </Button>
                 <span className="text-muted-foreground text-sm">
-                    Page {paging?.current_page ?? 1} of {paging?.total_page ?? 1}
+                    Halaman {paging?.current_page ?? 1} dari {paging?.total_page ?? 1}
                 </span>
                 <Button variant="outline" size="sm" onClick={handleNextPage} disabled={!paging || paging.current_page >= paging.total_page}>
-                    Next
+                    Selanjutnya
                 </Button>
             </div>
         </div>

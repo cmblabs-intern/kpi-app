@@ -38,7 +38,7 @@ export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Divisi" />
-            <div className="flex h-full w-full flex-1 flex-col gap-6 rounded-xl p-4">
+            <div className="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-4">
                 <div className="flex flex-col md:flex-row gap-y-4 items-center justify-between border-b-[1px] py-2">
                     <Heading title="Divisi Perusahaan" description="Kelola data divisi perusahaan" />
                     <DivisionModal />
@@ -46,9 +46,8 @@ export default function Dashboard() {
                 <DataTable
                     columns={divisionColumns}
                     data={division}
-                    searchKey="name"
-                    filterBy="nama divisi"
                     paging={divisionsResponse.paging}
+                    service='divisi'
                 />
             </div>
         </AppLayout>

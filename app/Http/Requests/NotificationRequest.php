@@ -25,7 +25,7 @@ class NotificationRequest extends FormRequest
             'title' => 'required|string|max:255',      // Validasi untuk judul notifikasi, wajib diisi, berupa string, max 255 karakter
             'message' => 'required|string',            // Validasi untuk pesan notifikasi, wajib diisi, berupa string
             'type' => 'required|in:in-app,email',      // Validasi untuk tipe notifikasi, harusnya 'in-app' atau 'email'
-            'is_read' => 'nullable|boolean',            // Validasi untuk status baca, bersifat opsional, jika ada harus berupa boolean
+            'is_read' => 'required|boolean',           
         ];
     }
 
