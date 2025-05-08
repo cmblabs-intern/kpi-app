@@ -20,7 +20,9 @@ class NotificationResource extends JsonResource
             'message' => $this->message,
             'type' => $this->type,
             'is_read' => $this->is_read,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at 
+            ? $this->created_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
+            : null,
         ];
     }
 }

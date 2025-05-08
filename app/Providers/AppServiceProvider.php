@@ -14,9 +14,11 @@ use App\Models\KpiMetric;
 use App\Repositories\DivisionRepository;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\KpiMetricRepository;
+use App\Repositories\NotificationRepository;
 use App\Services\DivisionService;
 use App\Services\EmployeeService;
 use App\Services\KpiMetricService;
+use App\Services\NotificationService;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 
@@ -53,6 +55,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(KpiMetricService::class, function ($app) {
             return new KpiMetricService($app->make(KpiMetricRepository::class));
         });
+
+        // Notification
+        $this->app->bind(NotificationRepository::class, function ($app) {
+            return new NotificationRepository();
+        });
+
+        $this->app->bind(NotificationService::class, function ($app) {
+            return new NotificationService($app->make(NotificationRepository::class));
+        });
     }
 
     /**
@@ -72,6 +83,10 @@ class AppServiceProvider extends ServiceProvider
         $kpiMetrics = KpiMetric::paginate(10);
         $allKpiMetrics = KpiMetric::all();
 
+        // Notification
+        $notifications = Division::paginate(10);
+        $allNotifications = Division::all();
+
         Inertia::share([
             'divisions' => new DivisionCollection($divisions),
             'allDivisions' => DivisionResource::collection($allDivisions),
@@ -79,6 +94,8 @@ class AppServiceProvider extends ServiceProvider
             'allEmployees' => EmployeeResource::collection($allEmployees),
             'kpiMetrics' => new KpiMetricCollection($kpiMetrics),
             'allKpiMetrics' => KpiMetricResource::collection($allKpiMetrics),
+            'notifications' => new DivisionCollection($notifications),
+            'allNotifications' => DivisionResource::collection($allNotifications),
         ]);
     }
 }

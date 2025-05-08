@@ -24,14 +24,14 @@ const DetailDropdown = ({ created_at, updated_at }: { created_at: string; update
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex flex-col items-start text-xs md:text-sm">
                     <div className="flex w-full items-center gap-2">
-                        <CalendarPlus2 className="h-4 w-4 text-white" />
+                        <CalendarPlus2 className="h-4 w-4 text-muted-foreground dark:text-white" />
                         <span className="text-muted-foreground"> Dibuat pada:</span>
                     </div>
                     <span className="text-sm font-medium">{created_at}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex flex-col items-start text-xs md:text-sm">
                     <div className="flex w-full items-center gap-2">
-                        <CalendarSync className="h-4 w-4 text-white" />
+                        <CalendarSync className="h-4 w-4 text-muted-foreground dark:text-white" />
                         <span className="text-muted-foreground">Diperbarui pada:</span>
                     </div>
                     <span className="text-sm font-medium">{updated_at}</span>

@@ -10,16 +10,17 @@ import { CreateKpiMetricData } from '@/types/kpi-metric';
 
 const KpiMetricCreateForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     const { data, setData, post, processing, errors, reset } = useForm<CreateKpiMetricData>({
-        code: '',
-        name: '',
-        year: new Date().getFullYear(),
-        unit: '',
+        code: '', // Disesuaikan sama yang ada di app/Http/Requests/KpiRequest.php
+        name: '', // Disesuaikan sama yang ada di app/Http/Requests/KpiRequest.php
+        year: new Date().getFullYear(), // Disesuaikan sama yang ada di app/Http/Requests/KpiRequest.php
+        unit: '', // Disesuaikan sama yang ada di app/Http/Requests/KpiRequest.php
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('kpi-metrics.store'), {
             onSuccess: () => {
+                console.log( 'Data created: ', data)
                 toast.success('Berhasil menambahkan KPI Metric!');
                 reset();
                 onSuccess?.();
@@ -29,6 +30,7 @@ const KpiMetricCreateForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
     return (
         <form className="flex flex-col gap-6" onSubmit={submit}>
+            {/* Isi form nya samakan dengan yang ada di userForm */}
             <div>
                 <Label htmlFor="code">Kode KPI</Label>
                 <Input

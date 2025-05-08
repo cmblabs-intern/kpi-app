@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { DivisionResponse, EmployeeResponse, PageProps, User } from '@/types';
+import { DivisionResponse, EmployeeResponse, PageProps, User as UserType } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 import { ColumnDef } from '@tanstack/react-table';
+import { User, Building2, CircleGauge } from 'lucide-react';
 
 // === Start ===
 // Kolom untuk tabel penilaian KPI (Buat didalam file components/kpi/kpi-columns.tsx)
@@ -60,16 +61,15 @@ const monthlyKPI = [
 ];
 
 export default function DashboardAdmin() {
-    const { allEmployees, allDivisions, auth } = usePage<PageProps<{ auth: User[] }>>().props;
+    const { allEmployees, allDivisions, auth } = usePage<PageProps<{ auth: UserType[] }>>().props;
     const employees = (allEmployees as EmployeeResponse)?.data ?? [];
     const divisions = (allDivisions as DivisionResponse)?.data ?? [];
     const latestKPI = monthlyKPI[monthlyKPI.length - 1];
     const user = auth.user;
 
-    console.log(auth.user.role);
     return (
         <AppLayout>
-            <Head title="Dashboard Admin" />
+            <Head title="Dashboard" />
             {auth && auth.user.role === 'user' ? (
                 // User dashboard
                 <div className="space-y-6 p-4">
@@ -82,7 +82,7 @@ export default function DashboardAdmin() {
 
                     {/* Menampilkan jumlah nilai KPI user */}
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-                        <Card className='flex flex-col items-center justify-between'>
+                        <Card className="flex flex-col items-center justify-between">
                             <CardHeader>
                                 <CardTitle>Jumlah Penilaian KPI</CardTitle>
                             </CardHeader>
@@ -114,10 +114,10 @@ export default function DashboardAdmin() {
                     {/*  Menampilkan Riwayat KPI Bulanan */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Riwayat Penilaian KPI Bulanan</CardTitle>
+                            <CardTitle>Riwayat Penilaian KPI 4 Bulan Terakhir</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {monthlyKPI.map((item, idx) => (
+                            {monthlyKPI.slice(-4).map((item, idx) => (
                                 <div key={idx} className="border-b pb-2">
                                     <p className="font-medium">{item.month}</p>
                                     <p className="text-muted-foreground text-sm">
@@ -138,14 +138,14 @@ export default function DashboardAdmin() {
                         Menampilkan jumlah karyawan, divisi, dan total penilaian KPI
                         */}
                     <div className="grid gap-10 md:grid-cols-3">
-                        <StatCard title="Karyawan" value={employees.length.toString()} />
-                        <StatCard title="Divisi" value={divisions.length.toString()} />
-                        <StatCard title="Penilaian KPI (Dummy)" value="123" />
+                        <StatCard title="Karyawan" value={employees.length.toString()} icon={<User className="size-8" />} />
+                        <StatCard title="Divisi" value={divisions.length.toString()} icon={<Building2 className="size-8" />} />
+                        <StatCard title="Penilaian KPI (Dummy)" value="123" icon={<CircleGauge className="size-8" />} />
                     </div>
 
                     {/* Grafik KPI (Dummy) */}
                     <div className="bg-background relative flex flex-col rounded-xl border p-6 shadow-sm">
-                        <h2 className="absolute -top-3 left-6 z-10 rounded-[4px] px-2 text-sm font-semibold bg-accent border">
+                        <h2 className="bg-accent absolute -top-3 left-6 z-10 rounded-[4px] border px-2 text-sm font-semibold">
                             Grafik KPI Bulanan (Dummy)
                         </h2>
                         <div className="h-60">
@@ -155,7 +155,7 @@ export default function DashboardAdmin() {
 
                     {/* Tabel Penilaian Terbaru (Dummy) */}
                     <div className="bg-background relative flex flex-col rounded-xl border p-6 shadow-sm">
-                        <h2 className="absolute -top-3 left-6 rounded-[4px] px-2 text-sm font-semibold bg-accent border">
+                        <h2 className="bg-accent absolute -top-3 left-6 rounded-[4px] border px-2 text-sm font-semibold">
                             Penilaian Terbaru (Dummy)
                         </h2>
                         <DataTable<KpiRow, string>
@@ -177,13 +177,12 @@ export default function DashboardAdmin() {
     );
 }
 
-function StatCard({ title, value }: { title: string; value: string }) {
+function StatCard({ title, value, icon }: { title: string; value: string; icon: React.ReactNode }) {
     return (
         <div className="bg-background relative flex aspect-video flex-col items-center justify-center rounded-xl border pt-6 shadow-sm">
-            <h2 className="absolute -top-3 left-6 rounded-[4px] px-2 text-sm font-semibold bg-accent border">
-                {title}
-            </h2>
-            <div className="text-center">
+            <h2 className="bg-accent absolute -top-3 left-6 rounded-[4px] border px-2 text-sm font-semibold">{title}</h2>
+            <div className="flex flex-col items-center justify-center mb-6">
+                <div className="rounded-full border p-2">{icon}</div>
                 <p className="text-muted-foreground text-sm">Total:</p>
                 <p className="text-2xl font-bold">{value}</p>
             </div>

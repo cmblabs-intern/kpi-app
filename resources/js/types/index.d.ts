@@ -1,3 +1,4 @@
+import { ColumnDef } from '@tanstack/react-table';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -19,6 +20,7 @@ export interface NavItem {
     title: string;
     href: string;
     icon?: LucideIcon | null;
+    role: string[];
     isActive?: boolean;
     className?: string;
 }

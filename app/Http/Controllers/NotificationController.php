@@ -25,7 +25,7 @@ class NotificationController extends Controller
         // Gunakan NotificationService untuk mendapatkan notifikasi berdasarkan user yang sedang login
         $notifications = $this->notificationService->getAllNotificationsByUser(Auth::id());
 
-        return Inertia::render('Notifications/Index', [
+        return Inertia::render('notifications', [
             'notifications' => NotificationResource::collection($notifications),
         ]);
     }
@@ -38,7 +38,7 @@ class NotificationController extends Controller
         // Dapatkan notifikasi berdasarkan ID dan user yang sedang login
         $notification = $this->notificationService->getNotificationById($id, Auth::id());
 
-        return Inertia::render('Notifications/Show', [
+        return Inertia::render('notifications', [
             'notification' => new NotificationResource($notification),
         ]);
     }
@@ -81,9 +81,13 @@ class NotificationController extends Controller
         $validated['user_id'] = Auth::id();
 
         // Gunakan service untuk membuat notifikasi baru
-        $this->notificationService->createNotification($validated);
+        $notification = $this->notificationService->createNotification($validated);
 
-        return redirect()->route('notifications.index')->with('success', 'Notifikasi berhasil dibuat.');
+        // return redirect()->route('notifications.index')->with('success', 'Notifikasi berhasil dibuat.');
+        return Inertia::render('notifications', [
+            'notification' => new NotificationResource($notification),
+            'notifications' => NotificationResource::collection($this->notificationService->list(['*'])),
+        ], 200);
     }
 }
 

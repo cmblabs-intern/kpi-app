@@ -34,7 +34,7 @@ class DivisionController extends Controller
     public function show(int $id)
     {
         try {
-            $fields = ['id', 'name', 'created_at', 'updated_at'];
+            $fields = ['*'];
             $division = $this->divisionService->getById($id, $fields);
 
             // Kirim data divisi sebagai props ke komponen React

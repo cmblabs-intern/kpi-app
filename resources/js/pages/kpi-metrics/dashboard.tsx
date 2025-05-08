@@ -22,6 +22,8 @@ export default function Dashboard() {
         index: index + 1,
     })) || [];
 
+    console.log(metrics)
+
     if (!kpiMetrics || !('data' in kpiMetrics)) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>

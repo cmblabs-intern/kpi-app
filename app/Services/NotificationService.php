@@ -44,6 +44,16 @@ class NotificationService
     }
 
     /**
+     * Mendapatkan semua data notifikasi.
+     *
+     * @param int $userId
+     * @return Collection
+     */
+    public function list(array $fields, ?int $perPage = null) {
+        return $this->notificationRepository->list($fields, $perPage);
+      }
+
+    /**
      * Mendapatkan notifikasi berdasarkan ID untuk user tertentu.
      *
      * @param int $id

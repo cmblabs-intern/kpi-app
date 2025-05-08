@@ -66,18 +66,17 @@ const EmployeeAction = ({ employee }: EmployeeActionProps) => {
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className='w-[9rem]'>
                     <DropdownMenuLabel className="w-full text-center">Aksi</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DataTableAction>
-                        <div className="-my-1 space-y-3 px-4">
                             {/* Button Edit */}
                             <Button
                                 onClick={() => {
                                     setIsDialogOpen(true);
                                     document.body.click();
                                 }}
-                                className="flex w-full max-w-[6.5rem] items-center justify-between gap-x-2 rounded-sm bg-sky-600 text-xs font-semibold text-white uppercase hover:bg-sky-600/85 md:text-sm"
+                                className="flex w-full items-center justify-between gap-x-2 rounded-sm bg-sky-600 text-xs font-semibold text-white uppercase hover:bg-sky-600/85 md:text-sm"
                             >
                                 Edit
                                 <Pencil className="size-4 text-white" />
@@ -87,13 +86,12 @@ const EmployeeAction = ({ employee }: EmployeeActionProps) => {
                             <AlertDelete service={`Karyawan ${employee.user.name}`} onClick={() => handleDelete()}>
                                 <Button
                                     variant="destructive"
-                                    className="flex w-full max-w-[6.5rem] items-center justify-between gap-x-2 rounded-sm uppercase"
+                                    className="flex w-full items-center justify-between gap-x-2 rounded-sm uppercase"
                                 >
                                     Delete
                                     <Trash2 className="size-4 text-white" />
                                 </Button>
                             </AlertDelete>
-                        </div>
                     </DataTableAction>
                 </DropdownMenuContent>
             </DropdownMenu>
