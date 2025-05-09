@@ -1,4 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -20,6 +21,7 @@ export interface NavItem {
     title: string;
     href: string;
     icon?: LucideIcon | null;
+    role: string[];
     role: string[];
     isActive?: boolean;
     className?: string;
@@ -65,6 +67,27 @@ export interface Employee {
     division: Division;
     created_at: string;
     updated_at: string;
+}
+
+export interface KpiMetric {
+    id: number;
+    division_id: number;
+    name: string;
+    description: string;
+    weight: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface KpiMetricResponse {
+    data: KpiMetric[];
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
+    };
+    message?: string;
+    status: string;
 }
 
 export interface KpiAssesments {
@@ -146,5 +169,3 @@ interface DataTableProps<TData, TValue> {
     };
     service: string;
 }
-
-
