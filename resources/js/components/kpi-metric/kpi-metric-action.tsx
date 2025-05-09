@@ -1,34 +1,34 @@
-import { toast } from 'sonner';
 import { router } from '@inertiajs/react';
-import { Button } from '../ui/button';
-import { useState } from 'react';
-import KpiMetricUpdateForm from './kpi-metric-update-form';
-import Modal from '../modal';
+import { KpiMetric } from '@/types';
+import AlertDelete from '@/components/alert-delete';
+import { Pencil, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import KpiMetricModal from './kpi-metric-modal';
 
-import { KpiMetric } from '@/types/kpi-metric';
+interface Props {
+  kpiMetric: KpiMetric;
+}
 
-type Props = {
-    metric: KpiMetric;
-};
+export default function KpiMetricAction({ kpiMetric }: Props) {
+  const handleDelete = () => {
+    router.delete(`/kpi-metrics/${kpiMetric.id}`);
+  };
 
-const KpiMetricAction = ({ metric }: Props) => {
-    const [open, setOpen] = useState(false);
-
-    const handleDelete = () => {
-        router.delete(route('kpi-metrics.destroy', { id: metric.id }), {
-            onSuccess: () => toast.success('Berhasil menghapus KPI Metric'),
-        });
-    };
-
-    return (
-        <div className="flex gap-2">
-           <Modal open={open} onOpenChange={setOpen} title="Edit KPI Metric" description="">
-                 <KpiMetricUpdateForm {...metric} onSuccess={() => setOpen(false)} />
-           </Modal>
-            <Button size="sm" variant="outline" onClick={() => setOpen(true)}>Edit</Button>
-            <Button size="sm" variant="destructive" onClick={handleDelete}>Delete</Button>
-        </div>
-    );
-};
-
-export default KpiMetricAction;
+  return (
+    <div className="flex gap-2">
+      <KpiMetricModal kpiMetric={kpiMetric}>
+        <Button size="icon" variant="outline">
+          <Pencil className="w-4 h-4" />
+        </Button>
+      </KpiMetricModal>
+      <AlertDelete
+        service="KPI Metric"
+        onClick={handleDelete}
+      >
+        <Button size="icon" variant="destructive">
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </AlertDelete>
+    </div>
+  );
+}
