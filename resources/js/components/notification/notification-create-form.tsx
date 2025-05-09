@@ -9,17 +9,16 @@ import { Textarea } from '../ui/textarea';
 const NotificationCreateForm = ({ onSuccess }: { onSuccess: () => void }) => {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
-    const [type, setType] = useState('');
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        router.post('/notifications', { title, body, type }, {
+        router.post('/notifications', { title, body, type: 'email' }, {
             onSuccess: () => {
-                toast.success('Notifikasi berhasil dibuat!');
+                toast.success('Notifikasi berhasil dikirim ke email!');
                 onSuccess();
             },
             onError: (errors) => {
-                toast.error(errors.message || 'Gagal membuat notifikasi');
+                toast.error(errors.message || 'Gagal mengirim notifikasi');
             },
         });
     };
@@ -34,20 +33,8 @@ const NotificationCreateForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 <Label>Isi</Label>
                 <Textarea value={body} onChange={(e) => setBody(e.target.value)} required />
             </div>
-            <div>
-            <Label>Tipe</Label>
-            <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                required
-                className="w-full border rounded px-3 py-2 text-sm"
-            >
-                <option value="">-- Pilih Tipe --</option>
-                <option value="in-app">Dalam Aplikasi</option>
-                <option value="email">Email</option>
-            </select>
-            </div>
-            <Button type="submit">Simpan</Button>
+            {/* Tipe tidak ditampilkan karena hanya "email" yang dibolehkan */}
+            <Button type="submit">Kirim ke Email</Button>
         </form>
     );
 };

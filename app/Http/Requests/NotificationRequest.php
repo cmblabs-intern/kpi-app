@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class NotificationRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah pengguna diizinkan membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,51 +15,44 @@ class NotificationRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Aturan validasi untuk request pengiriman notifikasi email.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',      // Validasi untuk judul notifikasi, wajib diisi, berupa string, max 255 karakter
-            'message' => 'required|string',            // Validasi untuk pesan notifikasi, wajib diisi, berupa string
-            'type' => 'required|in:in-app,email',      // Validasi untuk tipe notifikasi, harusnya 'in-app' atau 'email'
-            'is_read' => 'required|boolean',           
-        ];
-    }
-
-     /**
-     * Pesan kustom untuk setiap aturan validasi.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'title.required' => 'Judul notifikasi wajib diisi.',
-            'title.string' => 'Judul notifikasi harus berupa teks.',
-            'title.max' => 'Judul notifikasi tidak boleh lebih dari 255 karakter.',
-            'message.required' => 'Pesan notifikasi wajib diisi.',
-            'message.string' => 'Pesan notifikasi harus berupa teks.',
-            'type.required' => 'Tipe notifikasi wajib dipilih.',
-            'type.in' => 'Tipe notifikasi harus berupa "in-app" atau "email".',
-            'is_read.boolean' => 'Status baca harus berupa nilai boolean.',
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
         ];
     }
 
     /**
-     * Tentukan atribut yang akan digunakan dalam error bag.
+     * Pesan error kustom untuk validasi.
      *
-     * @return array<string, string>
+     * @return array
      */
-    public function attributes()
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Judul notifikasi wajib diisi.',
+            'title.string' => 'Judul notifikasi harus berupa teks.',
+            'title.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+            'message.required' => 'Pesan notifikasi wajib diisi.',
+            'message.string' => 'Pesan notifikasi harus berupa teks.',
+        ];
+    }
+
+    /**
+     * Nama atribut untuk pesan error yang lebih ramah.
+     *
+     * @return array
+     */
+    public function attributes(): array
     {
         return [
             'title' => 'Judul',
             'message' => 'Pesan',
-            'type' => 'Tipe Notifikasi',
-            'is_read' => 'Status Baca',
         ];
     }
 }

@@ -7,7 +7,6 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import type { Notification } from '@/types/notification';
 
-
 const NotificationUpdateForm = ({
     notification,
     onSuccess,
@@ -16,12 +15,15 @@ const NotificationUpdateForm = ({
     onSuccess: () => void;
 }) => {
     const [title, setTitle] = useState(notification.title);
-    const [body, setBody] = useState(notification.body);
-    const [type, setType] = useState(notification.type);
+    const [message, setMessage] = useState(notification.message); // ⬅️ ganti dari body ke message
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        router.put(`/notifications/${notification.id}`, { title, body, type }, {
+        router.put(`/notifications/${notification.id}`, {
+            title,
+            message,
+            type: 'email', // karena sesuai instruksi, hanya kirim via email
+        }, {
             onSuccess: () => {
                 toast.success('Notifikasi berhasil diperbarui!');
                 onSuccess();
@@ -39,20 +41,8 @@ const NotificationUpdateForm = ({
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
             <div>
-                <Label>Isi</Label>
-                <Textarea value={body} onChange={(e) => setBody(e.target.value)} required />
-            </div>
-            <div>
-                <Label>Tipe</Label>
-                <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    required
-                    className="w-full border rounded px-3 py-2 text-sm"
-                >
-                    <option value="in-app">Dalam Aplikasi</option>
-                    <option value="email">Email</option>
-                </select>
+                <Label>Pesan</Label>
+                <Textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
             </div>
             <Button type="submit">Simpan Perubahan</Button>
         </form>
