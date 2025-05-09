@@ -1,15 +1,27 @@
-import { useState } from 'react';
-import Modal from '../modal';
+import { ReactNode, useState } from 'react';
+import { KpiMetric, Division } from '@/types';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import KpiMetricCreateForm from './kpi-metric-create-form';
+import KpiMetricUpdateForm from './kpi-metric-update-form';
 
-const KpiMetricModal = () => {
-    const [open, setOpen] = useState(false);
+interface Props {
+  kpiMetric?: KpiMetric;
+  children?: ReactNode;
+}
 
-    return (
-        <Modal open={open} onOpenChange={setOpen} title="Tambah KPI Metric" description="">
-            <KpiMetricCreateForm onSuccess={() => setOpen(false)} />
-        </Modal>
-    );
-};
+export default function KpiMetricModal({ kpiMetric, children }: Props) {
+  const [open, setOpen] = useState(false);
 
-export default KpiMetricModal;
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        {kpiMetric ? (
+          <KpiMetricUpdateForm metric={kpiMetric} onSuccess={() => setOpen(false)} />
+        ) : (
+          <KpiMetricCreateForm onSuccess={() => setOpen(false)} />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}

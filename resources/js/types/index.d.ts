@@ -71,23 +71,38 @@ export interface Employee {
 
 export interface KpiMetric {
     id: number;
-    division_id: number;
+    code: string;
     name: string;
-    description: string;
-    weight: number;
-    created_at: string;
-    updated_at: string;
+    year: number;
+    unit: string;
+    division_id?: number;
+    description?: string;
+    weight?: number;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface CreateKpiMetricData {
+    code: string;
+    name: string;
+    year: number;
+    unit: string;
+    [key: string]: string | number;
+}
+
+export interface UpdateKpiMetricData extends CreateKpiMetricData {
+    id: number;
+}
+
+export interface KpiMetricPaging {
+    current_page: number;
+    size: number;
+    total_page: number;
 }
 
 export interface KpiMetricResponse {
     data: KpiMetric[];
-    paging?: {
-        current_page: number;
-        size: number;
-        total_page: number;
-    };
-    message?: string;
-    status: string;
+    paging: KpiMetricPaging;
 }
 
 export interface KpiAssesments {
