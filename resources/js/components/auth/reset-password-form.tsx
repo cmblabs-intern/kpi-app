@@ -5,21 +5,21 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
 interface ResetPasswordFormProps {
-  data: {
-    email: string;
-    password: string;
-    password_confirmation: string;
-  };
-  setData: (key: keyof ResetPasswordFormProps['data'], value: string | boolean) => void;
+    data: {
+        email: string;
+        password: string;
+        password_confirmation: string;
+    };
+    setData: (key: keyof ResetPasswordFormProps['data'], value: string | boolean) => void;
     errors: Record<string, string>;
     processing: boolean;
     submit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const ResetPasswordForm = ({data, setData, errors, processing, submit}: ResetPasswordFormProps) => {
+const ResetPasswordForm = ({ data, setData, errors, processing, submit }: ResetPasswordFormProps) => {
     return (
         <form onSubmit={submit}>
-            <div className="grid w-[22rem] gap-6">
+            <div className="grid max-w-xl gap-6">
                 <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
