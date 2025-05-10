@@ -14,6 +14,7 @@ use App\Models\KpiMetric;
 use App\Repositories\DivisionRepository;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\KpiMetricRepository;
+use App\Repositories\NotificationRepository;
 use App\Services\DivisionService;
 use App\Services\EmployeeService;
 use App\Services\KpiMetricService;
@@ -54,6 +55,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(KpiMetricService::class, function ($app) {
             return new KpiMetricService($app->make(KpiMetricRepository::class));
         });
+
+        // Notification
+        // $this->app->bind(NotificationRepository::class, function ($app) {
+        //     return new NotificationRepository();
+        // });
+
+        // $this->app->bind(NotificationService::class, function ($app) {
+        //     return new NotificationService($app->make(NotificationRepository::class));
+        // });
     }
 
     /**

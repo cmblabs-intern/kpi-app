@@ -11,18 +11,18 @@ interface AuthLayoutProps {
 
 export default function AuthSimpleLayout({ children, title, description }: PropsWithChildren<AuthLayoutProps>) {
     return (
-        <div className="md:bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center gap-6 p-6 md:p-10 md:rounded-sm max-w-2xl">
-            <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8 text-current md:text-white justify-center items-center">
-                    <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-1 flex-col items-center justify-center gap-6 p-6 backdrop-blur-sm md:p-10 lg:rounded-none">
+            <div className="w-full">
+                <div className="flex flex-col items-center justify-center gap-8 text-current">
+                    <div className="flex w-full max-w-sm flex-col items-center gap-4">
                         <Link href={route('home')} className="flex flex-col items-center gap-2 font-medium">
-                            <div className="mb-1 flex flex-col h-9 items-center justify-center rounded-md">
+                            <div className="mb-1 flex h-9 flex-col items-center justify-center rounded-md">
                                 <AppLogoIcon className="size-9 fill-current" />
-                                <h1 className='font-semibold text-sky-500'>CMLABS</h1>
+                                <h1 className="font-semibold text-sky-500">CMLABS</h1>
                             </div>
                             <span className="sr-only">{title}</span>
                         </Link>
-                        <Separator className='md:bg-white'/>
+                        <Separator className="w-full" />
 
                         <div className="space-y-2 text-center">
                             <h1 className="text-xl font-medium">{title}</h1>

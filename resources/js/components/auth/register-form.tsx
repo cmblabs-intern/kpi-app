@@ -22,8 +22,8 @@ interface RegisterFormProps {
 
 const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFormProps) => {
     return (
-        <form className="flex w-full flex-col gap-2 md:gap-6" onSubmit={submit}>
-            <div className="grid gap-6">
+        <form className="mx-auto flex w-full flex-col gap-2 md:gap-6 lg:w-5/6" onSubmit={submit}>
+            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Nama</Label>
                     <Input
@@ -37,7 +37,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('name', e.target.value)}
                         disabled={processing}
                         placeholder="Nama lengkap"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.name} className="mt-2" />
                 </div>
@@ -54,7 +54,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('email', e.target.value)}
                         disabled={processing}
                         placeholder="email@example.com"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.email} />
                 </div>
@@ -71,7 +71,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('password', e.target.value)}
                         disabled={processing}
                         placeholder="Masukan kata sandi"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.password} />
                 </div>
@@ -88,7 +88,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('password_confirmation', e.target.value)}
                         disabled={processing}
                         placeholder="Masukan kata sandi"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.password_confirmation} />
                 </div>
@@ -105,7 +105,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('phone', e.target.value)}
                         disabled={processing}
                         placeholder="+628123456789"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.phone} />
                 </div>
@@ -122,14 +122,14 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
                         onChange={(e) => setData('address', e.target.value)}
                         disabled={processing}
                         placeholder="Masukan alamat tempat tinggal"
-                        className="border-black md:border-white"
+                        className="border-black md:border-gray-300"
                     />
                     <InputError message={errors.address} />
                 </div>
 
                 <Button
                     type="submit"
-                    className="mt-2 w-full cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50"
+                    className="col-span-2 mt-2 w-full cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50"
                     tabIndex={5}
                     disabled={processing}
                 >
@@ -140,7 +140,7 @@ const RegisterForm = ({ data, setData, errors, processing, submit }: RegisterFor
 
             <div className="text-muted-foreground text-center text-sm">
                 Sudah memiliki akun?{' '}
-                <TextLink href={route('login')} tabIndex={6} className="md:text-white">
+                <TextLink href={route('login')} tabIndex={6}>
                     Masuk
                 </TextLink>
             </div>
