@@ -21,7 +21,7 @@ export default function Welcome() {
                     </nav>
                     <AppearanceToggleTab />
                 </header>
-                <div className="max-w-2xl rounded-lg shadow-2xl dark:shadow-white shadow-black p-6 px-6 text-center text-white backdrop-blur-lg  bg-black/40">
+                <div className="max-w-2xl rounded-lg shadow-2xl dark:shadow-white/20 shadow-black p-6 px-6 text-center text-white backdrop-blur-lg  bg-neutral-500">
                     <AnimatedHeadline />
                     <p className="text-white mb-6 text-sm md:text-lg">Pantau dan kelola performa karyawan secara transparan, akurat, dan efisien.</p>
 

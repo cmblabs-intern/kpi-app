@@ -16,6 +16,9 @@ class KpiMetricResource extends JsonResource
             'weight' => $this->weight,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'division' => [
+                'name' => optional($this->division)->name,
+            ]
         ];
     }
 }

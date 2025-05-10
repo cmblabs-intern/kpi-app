@@ -14,6 +14,8 @@ export default function KpiMetricDashboard() {
     index: index + 1,
   }));
 
+  console.log(kpiData)
+
   return (
     <AppLayout>
       <Head title="Dashboard KPI Metrics" />

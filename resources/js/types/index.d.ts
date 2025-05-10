@@ -1,5 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { ColumnDef } from '@tanstack/react-table';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -69,13 +68,23 @@ export interface Employee {
     updated_at: string;
 }
 
+export interface KpiAssessment {
+    id: number;
+    employee_id: number;
+    month: string;
+    total_score: string;
+    employee: Employee;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface KpiMetric {
     id: number;
     code: string;
     name: string;
     year: number;
     unit: string;
-    division_id?: number;
+    division: Division;
     description?: string;
     weight?: number;
     created_at?: string;
@@ -103,6 +112,8 @@ export interface KpiMetricPaging {
 export interface KpiMetricResponse {
     data: KpiMetric[];
     paging: KpiMetricPaging;
+    message?: string;
+    status: string;
 }
 
 export interface KpiAssesments {

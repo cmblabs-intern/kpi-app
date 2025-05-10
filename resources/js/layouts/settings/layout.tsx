@@ -11,16 +11,19 @@ const sidebarNavItems: NavItem[] = [
         title: 'Profil',
         href: '/settings/profile',
         icon: null,
+        role: ['user', 'admin']
     },
     {
         title: 'Kata sandi',
         href: '/settings/password',
         icon: null,
+        role: ['user', 'admin']
     },
     {
         title: 'Tampilan',
         href: '/settings/appearance',
         icon: null,
+        role: ['user', 'admin']
     },
 ];
 

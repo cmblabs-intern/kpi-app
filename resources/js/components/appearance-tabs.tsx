@@ -25,7 +25,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
                         <Button variant="outline" size="sm" className="w-full justify-start gap-2">
                             {current && (
                                 <>
-                                    <current.icon className="h-4 w-4" />
+                                    <current.icon className="h-4 w-4 dark:text-white" />
                                 </>
                             )}
                         </Button>
@@ -37,7 +37,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
                                 onClick={() => updateAppearance(value)}
                                 className={cn(appearance === value && 'font-semibold')}
                             >
-                                <Icon className="mr-2 h-4 w-4 " />
+                                <Icon className="mr-2 h-4 w-4" />
                                 {label}
                             </DropdownMenuItem>
                         ))}
