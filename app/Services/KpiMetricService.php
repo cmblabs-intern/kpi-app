@@ -13,7 +13,7 @@ class KpiMetricService
         $this->kpiMetricRepository = $kpiMetricRepository;
     }
 
-    public function list(array $fields = ['*'])
+    public function list(array $fields)
     {
         return $this->kpiMetricRepository->list($fields);
     }

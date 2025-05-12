@@ -6,17 +6,27 @@ use App\Http\Resources\DivisionCollection;
 use App\Http\Resources\DivisionResource;
 use App\Http\Resources\EmployeeCollection;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\KpiAssessmentCollection;
+use App\Http\Resources\KpiAssessmentDetailCollection;
+use App\Http\Resources\KpiAssessmentDetailResource;
+use App\Http\Resources\KpiAssessmentResource;
 use App\Http\Resources\KpiMetricCollection;
 use App\Http\Resources\KpiMetricResource;
 use App\Models\Division;
 use App\Models\Employee;
+use App\Models\KpiAssessment;
+use App\Models\KpiAssessmentDetail;
 use App\Models\KpiMetric;
 use App\Repositories\DivisionRepository;
 use App\Repositories\EmployeeRepository;
+use App\Repositories\KpiAssessmentDetailRepository;
+use App\Repositories\KpiAssessmentRepository;
 use App\Repositories\KpiMetricRepository;
 use App\Repositories\NotificationRepository;
 use App\Services\DivisionService;
 use App\Services\EmployeeService;
+use App\Services\KpiAssessmentDetailService;
+use App\Services\KpiAssessmentService;
 use App\Services\KpiMetricService;
 use App\Services\NotificationService;
 use Illuminate\Support\ServiceProvider;
@@ -56,13 +66,22 @@ class AppServiceProvider extends ServiceProvider
             return new KpiMetricService($app->make(KpiMetricRepository::class));
         });
 
-        // Notification
-        $this->app->bind(NotificationRepository::class, function ($app) {
-            return new NotificationRepository();
+        // KpiAssessment
+        $this->app->bind(KpiAssessmentRepository::class, function ($app) {
+            return new KpiAssessmentRepository();
         });
 
-        $this->app->bind(NotificationService::class, function ($app) {
-            return new NotificationService($app->make(NotificationRepository::class));
+        $this->app->bind(KpiAssessmentService::class, function ($app) {
+            return new KpiAssessmentService($app->make(KpiAssessmentRepository::class));
+        });
+       
+        // KpiAssessmentDetail
+        $this->app->bind(KpiAssessmentDetailRepository::class, function ($app) {
+            return new KpiAssessmentDetailRepository();
+        });
+
+        $this->app->bind(KpiAssessmentDetailService::class, function ($app) {
+            return new KpiAssessmentDetailService($app->make(KpiAssessmentDetailRepository::class));
         });
     }
 
@@ -83,9 +102,13 @@ class AppServiceProvider extends ServiceProvider
         $kpiMetrics = KpiMetric::paginate(10);
         $allKpiMetrics = KpiMetric::all();
 
-        // Notification
-        $notifications = Division::paginate(10);
-        $allNotifications = Division::all();
+        // KpiAssessment
+        $kpiAssessments = KpiAssessment::paginate(10);
+        $allKpiAssessments = KpiAssessment::all();
+
+        // KpiAssessmentDetail
+        $kpiAssessmentsDetail = KpiAssessmentDetail::paginate(10);
+        $allKpiAssessmentsDetail = KpiAssessmentDetail::all();
 
         Inertia::share([
             'divisions' => new DivisionCollection($divisions),
@@ -94,8 +117,10 @@ class AppServiceProvider extends ServiceProvider
             'allEmployees' => EmployeeResource::collection($allEmployees),
             'kpiMetrics' => new KpiMetricCollection($kpiMetrics),
             'allKpiMetrics' => KpiMetricResource::collection($allKpiMetrics),
-            'notifications' => new DivisionCollection($notifications),
-            'allNotifications' => DivisionResource::collection($allNotifications),
+            'kpiAssessments' => new KpiAssessmentCollection($kpiAssessments),
+            'allKpiAssessments' => KpiAssessmentResource::collection($allKpiAssessments),
+            'kpiAssessmentsDetail' => new KpiAssessmentDetailCollection($kpiAssessmentsDetail),
+            'allKpiAssessmentsDetail' => KpiAssessmentDetailResource::collection($allKpiAssessmentsDetail),
         ]);
     }
 }

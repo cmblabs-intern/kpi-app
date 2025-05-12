@@ -20,10 +20,10 @@ interface LoginFormProps {
 
 const LoginForm = ({ data, setData, errors, processing, canResetPassword, submit }: LoginFormProps) => {
     return (
-        <form className="flex w-full flex-col gap-2 md:gap-6" onSubmit={submit}>
+        <form className="flex w-full max-w-xl flex-col gap-2 md:gap-6" onSubmit={submit}>
             <div className="grid gap-6">
                 <div className="grid gap-2">
-                    <Label htmlFor="email">Alamat email</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -34,7 +34,7 @@ const LoginForm = ({ data, setData, errors, processing, canResetPassword, submit
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         placeholder="email@example.com"
-                        className="md:border-white"
+                        className="border-gray-300"
                     />
                     <InputError message={errors.email} />
                 </div>
@@ -43,7 +43,7 @@ const LoginForm = ({ data, setData, errors, processing, canResetPassword, submit
                     <div className="flex items-center">
                         <Label htmlFor="password">Kata sandi</Label>
                         {canResetPassword && (
-                            <TextLink href={route('password.request')} className="ml-auto text-sm md:text-white" tabIndex={5}>
+                            <TextLink href={route('password.request')} className="text-decoration-none ml-auto text-sm" tabIndex={5}>
                                 Lupa kata sandi?
                             </TextLink>
                         )}
@@ -57,7 +57,7 @@ const LoginForm = ({ data, setData, errors, processing, canResetPassword, submit
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         placeholder="Masukan kata sandi"
-                        className="md:border-white"
+                        className="border-gray-300"
                     />
                     <InputError message={errors.password} />
                 </div>
@@ -70,7 +70,7 @@ const LoginForm = ({ data, setData, errors, processing, canResetPassword, submit
 
             <div className="text-muted-foreground text-center text-sm">
                 Belum memiliki akun?{' '}
-                <TextLink href={route('register')} tabIndex={5} className="md:text-white">
+                <TextLink href={route('register')} tabIndex={5}>
                     Daftar
                 </TextLink>
             </div>

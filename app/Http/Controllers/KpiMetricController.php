@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\KpiMetricRequest;
+use App\Http\Resources\DivisionResource;
 use App\Http\Resources\KpiMetricCollection;
 use App\Http\Resources\KpiMetricResource;
+use App\Models\Division;
 use App\Services\KpiMetricService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
@@ -20,10 +22,13 @@ class KpiMetricController extends Controller
 
     public function index()
     {
+        $divisions = Division::all();
         $fields = ['*'];
-        $metrics = $this->kpiMetricService->list($fields, 10);
+
+        $metrics = $this->kpiMetricService->list($fields);
 
         return Inertia::render('kpi-metrics/dashboard', [
+            'divisions' => DivisionResource::collection($divisions),
             'kpi_metrics' => new KpiMetricCollection($metrics),
         ]);
     }
@@ -43,23 +48,17 @@ class KpiMetricController extends Controller
     }
     public function store(KpiMetricRequest $request)
     {
-        $metric = $this->kpiMetricService->create($request->validated());
+        $this->kpiMetricService->create($request->validated());
 
-        return Inertia::render('kpi-metrics/dashboard', [
-            'kpi_metric' => new KpiMetricResource($metric),
-            'kpi_metrics' => KpiMetricResource::collection($this->kpiMetricService->list(['*'])),
-        ], 201);
+        return redirect()->route('kpi-metrics.index')->with('success', 'KPI Metric berhasil ditambahkan');
     }
 
     public function update(KpiMetricRequest $request, int $id)
     {
         try {
-            $metric = $this->kpiMetricService->update($id, $request->validated());
+            $this->kpiMetricService->update($id, $request->validated());
 
-            return Inertia::render('kpi-metrics/dashboard', [
-                'kpi_metric' => new KpiMetricResource($metric),
-                'kpi_metrics' => KpiMetricResource::collection($this->kpiMetricService->list(['*'])),
-            ], 201);
+            return redirect()->route('kpi-metrics.index');
         } catch (ModelNotFoundException $error) {
             return response()->json(['message' => 'Data KPI Metric tidak ditemukan'], 404);
         }

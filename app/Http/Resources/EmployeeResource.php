@@ -26,15 +26,8 @@ class EmployeeResource extends JsonResource
             'updated_at' => $this->updated_at 
             ? $this->updated_at->locale('id')->translatedFormat('l, d F Y, H:i:s') . ' WIB'
             : null,
-            'user' => [
-                'name' => optional($this->user)->name,
-                'email' => optional($this->user)->email,
-                'phone' => optional($this->user)->phone,
-                'address' => optional($this->user)->address,
-            ],
-            'division' => [
-                'name' => optional($this->division)->name,
-            ]
+            'user' => $this->user,
+            'division' => $this->division
         ];
     }
 }

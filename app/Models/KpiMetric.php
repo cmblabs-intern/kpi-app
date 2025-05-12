@@ -12,4 +12,9 @@ class KpiMetric extends Model
     {
         return $this->belongsTo(Division::class);
     }
+
+    public function kpiAssessmentDetails()
+    {
+        return $this->hasMany(KpiAssessmentDetail::class);
+    }
 }

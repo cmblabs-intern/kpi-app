@@ -8,8 +8,13 @@ class Division extends Model
 {
     protected $fillable = ['name'];
 
-    public function division()
+    public function employees()
     {
-        return $this->hasOne(Division::class);
+        return $this->hasMany(Employee::class);
+    }
+
+    public function kpiMatrices()
+    {
+        return $this->hasMany(KpiMetric::class);
     }
 }

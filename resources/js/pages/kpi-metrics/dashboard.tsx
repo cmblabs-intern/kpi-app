@@ -7,12 +7,15 @@ import { type KpiMetric, type PageProps, type KpiMetricResponse } from '@/types'
 import { Head, usePage } from '@inertiajs/react';
 
 export default function KpiMetricDashboard() {
-  const { kpiMetrics } = usePage<PageProps<{ kpiMetrics: KpiMetric[] }>>().props;
+  const { kpiMetrics } = usePage<PageProps>().props;
   const kpiMetricsResponse = kpiMetrics as KpiMetricResponse;
   const kpiData = kpiMetricsResponse.data.map((item, index) => ({
     ...item,
     index: index + 1,
   }));
+
+  console.log('METRIX RESPONSE : ', kpiMetricsResponse)
+  console.log(kpiData)
 
   return (
     <AppLayout>

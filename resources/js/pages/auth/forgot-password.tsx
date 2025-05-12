@@ -27,17 +27,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
         <AuthLayout title="Lupa kata sandi" description="Masukkan email untuk reset kata sandi anda">
             <Head title="Lupa kata sandi" />
 
-            {status && (
-                <div
-                    className={`mb-4 text-center text-sm font-medium ${
-                        isErrorStatus ? 'text-red-600' : 'text-green-600'
-                    }`}
-                >
-                    {status}
-                </div>
-            )}
+            {status && <div className={`mb-4 text-center text-sm font-medium ${isErrorStatus ? 'text-red-600' : 'text-green-600'}`}>{status}</div>}
 
-            <div className="space-y-6 w-full">
+            <div className="w-full max-w-xl space-y-6">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Alamat email</Label>
@@ -56,7 +48,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     </div>
 
                     <div className="my-6 flex items-center justify-start">
-                        <Button className="w-full text-white bg-sky-600 hover:bg-sky-500/50" disabled={processing}>
+                        <Button className="w-full bg-sky-600 text-white hover:bg-sky-500/50" disabled={processing}>
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Kirim Link Reset
                         </Button>

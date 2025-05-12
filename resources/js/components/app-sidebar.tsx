@@ -2,7 +2,7 @@ import { NavMain } from '@/components/nav-main';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { PageProps, User, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Building2, CircleGauge, ClipboardPenLine, LayoutGrid, Users } from 'lucide-react';
+import { BarChart2, BookOpen, Building2, CircleGauge, ClipboardPenLine, LayoutGrid, Users } from 'lucide-react';
 
 const mainNavItems: (NavItem)[] = [
     {
@@ -30,10 +30,16 @@ const mainNavItems: (NavItem)[] = [
         role: ['user'],
     },
     {
-        title: 'KPI Metrics',
+        title: 'Matrix KPI',
         href: '/kpi-metrics/dashboard',
         icon: BookOpen,
         role: ['admin'],
+    },
+    {
+        title: 'Penilaian KPI',
+        href: '/kpi-assessments/dashboard',
+        icon: BarChart2,
+        role: ['admin']
     },
     {
         title: 'Laporan',
