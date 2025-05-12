@@ -35,6 +35,12 @@ const mainNavItems: (NavItem)[] = [
         icon: BookOpen,
         role: ['admin'],
     },
+        {
+        title: 'KPI Assesment',
+        href: '/kpi-assesment/dashboard',
+        icon: BookOpen,
+        role: ['admin'],
+    },
     {
         title: 'Laporan',
         href: '/report',
