@@ -62,13 +62,10 @@ class EmployeeController extends Controller
     // Method untuk menyimpan/membuat data karyawan baru
     public function store(EmployeeRequest $request)
     {
-        $employee = $this->employeeService->create($request->validated());
+        $this->employeeService->create($request->validated());
 
-        // Kirim data karyawan baru sebagai props ke komponen React
-        return Inertia::render('employees/dashboard', [
-            'employee' => new EmployeeResource($employee),
-            'employees' => EmployeeResource::collection($this->employeeService->list(['*'])),
-        ], 201);
+        // Redirect kembali ke halaman index dengan pesan sukses
+        return redirect()->route('employees.index')->with('success', 'Data Karyawan berhasil ditambahkan');
     }
     
     // Method untuk memperbarui data karyawan
@@ -76,9 +73,10 @@ class EmployeeController extends Controller
     {
         try {
             $this->employeeService->update($id, $request->validated());
+            $this->employeeService->list(['*']);
 
-            // Redirect ke route yang sudah dinamai 'employees.index' (/employees/dashboard)
-            return redirect()->route('employees.index');
+            // Redirect kembali ke halaman index dengan pesan sukses
+            return redirect()->route('employees.index')->with('success', 'Data Karyawan berhasil diubah');
         } catch (ModelNotFoundException $error) {
             // Jika data tidak ditemukan, kirimkan halaman error
             return Inertia::render('Error', [

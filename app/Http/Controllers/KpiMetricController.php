@@ -24,11 +24,12 @@ class KpiMetricController extends Controller
     {
         $divisions = Division::all();
         $fields = ['*'];
-        $metrics = $this->kpiMetricService->list($fields, 10);
+
+        $metrics = $this->kpiMetricService->list($fields);
 
         return Inertia::render('kpi-metrics/dashboard', [
-            'kpi_metrics' => new KpiMetricCollection($metrics),
             'divisions' => DivisionResource::collection($divisions),
+            'kpi_metrics' => new KpiMetricCollection($metrics),
         ]);
     }
 
@@ -47,12 +48,9 @@ class KpiMetricController extends Controller
     }
     public function store(KpiMetricRequest $request)
     {
-        $metric = $this->kpiMetricService->create($request->validated());
+        $this->kpiMetricService->create($request->validated());
 
-        return Inertia::render('kpi-metrics/dashboard', [
-            'kpi_metric' => new KpiMetricResource($metric),
-            'kpi_metrics' => KpiMetricResource::collection($this->kpiMetricService->list(['*'])),
-        ], 201);
+        return redirect()->route('kpi-metrics.index')->with('success', 'KPI Metric berhasil ditambahkan');
     }
 
     public function update(KpiMetricRequest $request, int $id)

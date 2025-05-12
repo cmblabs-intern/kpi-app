@@ -1,48 +1,55 @@
-import { KpiAssessment } from '@/types';
+import { KpiAssessmentDetail } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import DetailDropdown from '../detail-dropdown';
-import KpiAssessmentAction from './kpi-assessment-action';
+import { Link } from '@inertiajs/react';
+import { Button } from '../ui/button';
+import { monthYearFunc } from '@/pages/kpi-assessments/details';
 
-export const kpiAssessmentColumns: ColumnDef<KpiAssessment>[] = [
+export const kpiAssessmentColumns: ColumnDef<KpiAssessmentDetail>[] = [
     {
         accessorKey: 'index',
         header: 'No.',
         enableColumnFilter: false,
     },
     {
-        accessorKey: 'employee_name',
-        accessorFn: (row) => row.employee?.user.name ?? '',
+        accessorFn: (row) => row.assessment?.employee?.user?.name ?? '',
         header: 'Nama Karyawan',
+
+        enableColumnFilter: true,
+    },
+    {
+        accessorFn: (row) => row.assessment?.employee?.division?.name ?? '',
+        header: 'Divisi',
         cell: ({ row }) => {
-            return row.original.employee?.user.name ?? '';
+            return row.original.assessment?.employee?.division?.name ?? '';
         },
         enableColumnFilter: true,
     },
     {
-      accessorKey: 'moth',
-      header: 'Bulan',
-      enableColumnFilter: true,
+        accessorFn: (row) => row.assessment?.employee?.position ?? '',
+        header: 'Jabatan',
+
+        enableColumnFilter: true,
     },
     {
-        accessorKey: 'total_score',
+        accessorFn: (row) => row.assessment.total_score ?? '',
         header: 'Nilai Total',
         enableColumnFilter: true,
     },
     {
         accessorKey: 'detail',
-        header: 'detail',
+        header: 'Detail KPI Karyawan',
+        cell: ({ row }) => (
+            <Link href={`employee-detail?employee=${ row.original.assessment.employee_id }&month=${monthYearFunc(row.original.assessment.month)}`}>
+                <Button className='bg-sky-600 text-white hover:bg-sky-500/50'>Lihat detail</Button>
+            </Link>
+        ),
         enableColumnFilter: false,
     },
     {
         accessorKey: 'detail_timestamps',
         header: 'Informasi Waktu',
-        cell: ({ row }) => <DetailDropdown created_at={row.original.created_at} updated_at={row.original.updated_at} />,
-        enableColumnFilter: false,
-    },
-    {
-        accessorKey: 'id',
-        header: 'Aksi',
-        cell: ({ row }) => <KpiAssessmentAction kpiAssessment={row.original} />,
+        cell: ({ row }) => <DetailDropdown created_at={row.original.created_at ?? ''} updated_at={row.original.updated_at ?? ''} />,
         enableColumnFilter: false,
     },
 ];

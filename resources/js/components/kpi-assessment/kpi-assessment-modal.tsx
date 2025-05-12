@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Modal from '../modal';
+import KpiAssessmentCreateForm from './kpi-assessment-create-form';
 
 const KpiAssessmentModal = () => {
   const [open, setOpen] = useState(false);
     return (
-        <Modal title="Tambah Evaluasi KPI" description="Menambahkan data Evaluasi KPI baru" open={open} onOpenChange={setOpen}>
-            <div>Create modal</div>
+        <Modal title="Tambah Penilaian KPI" description="Menambahkan data Penilaian KPI baru" open={open} onOpenChange={setOpen}>
+            <KpiAssessmentCreateForm onSuccess={() => setOpen(false)}/>
         </Modal>
     );
 };

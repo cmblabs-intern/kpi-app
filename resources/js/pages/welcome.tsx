@@ -22,26 +22,12 @@ export default function Welcome() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-<<<<<<< HEAD
-            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] dark:bg-[#0a0a0a] p-6 text-[#1b1b18] justify-between lg:p-8">
-                <header className="px-5 w-full flex justify-between">
-                    <nav className="flex items-center justify-end gap-4">
-                        <img src="/cmlabs.ico" alt="logo" className="h-10 w-10 rounded-[4px]" />
-                        <span className="text-3xl font-semibold text-sky-500">cmlabs</span>
-                    </nav>
-                    <AppearanceToggleTab />
-                </header>
-                <div className="max-w-2xl rounded-lg shadow-2xl dark:shadow-white/20 shadow-black p-6 px-6 text-center text-white backdrop-blur-lg  bg-neutral-500">
-                    <AnimatedHeadline />
-                    <p className="text-white mb-6 text-sm md:text-lg">Pantau dan kelola performa karyawan secara transparan, akurat, dan efisien.</p>
-=======
             <div className="relative flex h-screen flex-col items-center justify-between overflow-hidden bg-[#FDFDFC] p-6 text-[#1b1b18] transition-colors duration-300 dark:bg-gradient-to-b dark:from-[#0a0a0a] dark:via-[#08164f] dark:to-[#186ffb] dark:text-white">
                 {/* Background kiri */}
                 <div
                     className="absolute inset-y-0 left-0 w-1/6 bg-cover bg-right sm:w-1/4 md:w-1/6 lg:w-1/6 dark:hidden"
                     style={{ backgroundImage: 'url(/cmlabs/cover-left.png)' }}
                 ></div>
->>>>>>> cd6d292ee742ea5fc1ca13f064c1c18a15162c08
 
                 {/* Background kanan */}
                 <div
@@ -60,21 +46,22 @@ export default function Welcome() {
                         <AppearanceToggleTab />
                         <div className="hidden items-center gap-4 sm:flex">
                             {auth.user ? (
-                                <Link href={route('dashboard')}>
-                                    <button className="rounded-full border border-black px-4 py-2 text-sm transition hover:bg-black/10 dark:border-white dark:hover:bg-white/20">
-                                        Dashboard
-                                    </button>
-                                </Link>
+                                // <Link href={route('dashboard')}>
+                                //     <button className="rounded-full border border-black px-4 py-2 text-sm transition hover:bg-black/10 dark:border-white dark:hover:bg-white/20">
+                                //         Dashboard
+                                //     </button>
+                                // </Link>
+                            <></>
                             ) : (
                                 <>
                                     <Link href={route('login')}>
                                         <button className="cursor-pointer text-sm text-black transition hover:underline dark:text-white">
-                                            Log In
+                                            Masuk
                                         </button>
                                     </Link>
                                     <Link href={route('register')}>
                                         <button className="cursor-pointer rounded-full border border-black px-4 py-2 text-sm text-black transition hover:bg-black/10 dark:border-white dark:text-white dark:hover:bg-white/20">
-                                            Get Started
+                                            Daftar
                                         </button>
                                     </Link>
                                 </>
@@ -109,12 +96,12 @@ export default function Welcome() {
                                 <>
                                     <Link href={route('login')}>
                                         <button className="cursor-pointer text-sm text-black transition hover:underline dark:text-white">
-                                            Log In
+                                            Masuk
                                         </button>
                                     </Link>
                                     <Link href={route('register')}>
                                         <button className="cursor-pointer rounded-full border border-black px-4 py-2 text-sm text-black transition hover:bg-black/10 dark:border-white dark:text-white dark:hover:bg-white/20">
-                                            Get Started
+                                            Daftar
                                         </button>
                                     </Link>
                                 </>
@@ -130,7 +117,7 @@ export default function Welcome() {
                     </p>
                     <Link href={auth.user ? route('dashboard') : route('login')}>
                         <button className="cursor-pointer rounded-full bg-black px-6 py-2 text-sm font-medium text-white transition hover:opacity-80 md:text-base dark:bg-white dark:text-black">
-                            {auth.user ? 'Go to Dashboard' : 'See u Performance'}
+                            {auth.user ? 'Lihat Dashboard' : 'Lihat Performa Anda'}
                         </button>
                     </Link>
                     <div className="mt-8 hidden rounded-xl border p-5 shadow-lg lg:block dark:border-none dark:shadow-none">

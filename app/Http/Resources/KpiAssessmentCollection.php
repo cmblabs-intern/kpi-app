@@ -5,12 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class KpiMetricCollection extends ResourceCollection
+class KpiAssessmentCollection extends ResourceCollection
 {
-    public static $wrap = null;
-    public function toArray(Request $request)
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function toArray(Request $request): array
     {
-        return KpiMetricResource::collection($this->collection)->resolve();
+        return KpiAssessmentResource::collection($this->collection)->resolve();
     }
 
     /**

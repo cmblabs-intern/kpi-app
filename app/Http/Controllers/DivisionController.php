@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DivisionRequest;
 use App\Http\Resources\DivisionCollection;
 use App\Http\Resources\DivisionResource;
-use App\Models\Division;
 use App\Services\DivisionService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
@@ -52,26 +51,20 @@ class DivisionController extends Controller
     // Method untuk menyimpan/membuat data karyawan
     public function store(DivisionRequest $request)
     {
-        $division = $this->divisionService->create($request->validated());
+        $this->divisionService->create($request->validated());
         
-        // Kirim data division baru sebagai props ke komponen React
-        return Inertia::render('divisions/dashboard', [
-            'division' => new DivisionResource($division),
-            'divisions' => DivisionResource::collection($this->divisionService->list(['*'])),
-        ], 201);
+        // Redirect kembali ke halaman index dengan pesan sukses
+        return redirect()->route('divisions.index')->with('success', 'Data Division berhasil ditambahkan');
     }
     
     // Method untuk memperbarui data divisi
     public function update(DivisionRequest $request, int $id)
     {
         try {
-            $division = $this->divisionService->update($id, $request->validated());
+            $this->divisionService->update($id, $request->validated());
             
-            // Redirect ke route yang sudah dinamai 'divisions.index' (/divisions/dashboard)
-            return Inertia::render('divisions/dashboard', [
-                'division' => new DivisionResource($division),
-                'divisions' => DivisionResource::collection($this->divisionService->list(['*'])),
-            ], 201);
+            // Redirect kembali ke halaman index dengan pesan sukses
+            return redirect()->route('divisions.index')->with('success', 'Data Division berhasil diubah');
         } catch (ModelNotFoundException $error) {
             // Jika data tidak ditemukan, kirimkan halaman error
             return response()->json([

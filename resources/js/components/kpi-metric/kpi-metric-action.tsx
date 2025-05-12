@@ -15,8 +15,8 @@ type KpiMetricProps = {
         id: number;
         division_id: number;
         name: string;
-        description: string;
-        weight: string;
+        description?: string;
+        weight: number;
         created_at: string;
         updated_at: string;
         division: Division;
@@ -51,8 +51,8 @@ export default function KpiMetricAction({ kpiMetric }: KpiMetricProps) {
                     id={kpiMetric.id}
                     division_id={kpiMetric.division_id}
                     name={kpiMetric.name}
-                    description={kpiMetric.description}
-                    weight={kpiMetric.weight}
+                    description={kpiMetric.description ?? ''}
+                    weight={kpiMetric.weight.toString()}
                     kpi_matric_division={kpiMetric.division}
                 />
             </DialogForm>

@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Division, DivisionResponse, PageProps } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+import { toast } from 'sonner';
+import InputError from '../input-error';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import InputError from '../input-error';
-import { Division, DivisionResponse, PageProps } from '@/types';
-import { toast } from 'sonner';
-import { FormEventHandler } from 'react';
 
 interface CreateKpiMetricForm {
     division_id: string;
@@ -65,12 +65,24 @@ export default function KpiMetricCreateForm({ onSuccess }: Props) {
                         )}
                     </SelectContent>
                 </Select>
-                <InputError message={errors.division_id} className="mt-2" />
+                <InputError message={errors.division_id} />
             </div>
-            <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Nama KPI" />
-            <Input value={data.weight} onChange={(e) => setData('weight', e.target.value)} placeholder="Bobot (%)" />
-            <Textarea value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Deskripsi" />
-            <Button type="submit" disabled={processing}>
+            <div className="grid gap-2">
+                <Label htmlFor="name">Nama Metrix</Label>
+                <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Nama KPI" />
+                <InputError message={errors.name} />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="wight">Berat Metrix</Label>
+                <Input value={data.weight} onChange={(e) => setData('weight', e.target.value)} placeholder="Bobot (%)" />
+                <InputError message={errors.wight} />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="description">Deskripsi Metrix</Label>
+                <Textarea value={data.description} onChange={(e) => setData('description', e.target.value)} placeholder="Deskripsi" />
+                <InputError message={errors.description} />
+            </div>
+            <Button type="submit" disabled={processing} className="mt-2 w-full cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50">
                 Simpan
             </Button>
         </form>
