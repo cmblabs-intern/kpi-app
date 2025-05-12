@@ -20,7 +20,9 @@ class Employee extends Model
     public function division() {
         return $this->belongsTo(Division::class);
     }
-    public function assessments()
+
+
+    public function kpiAssessment()
     {
         return $this->hasMany(KpiAssessment::class);
     }

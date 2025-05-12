@@ -79,7 +79,7 @@ const CreateEmployeeForm = ({ onSuccess }: CreateEmployeeFormProps) => {
                                         </SelectItem>
                                     ))
                             ) : (
-                                <SelectItem value="no-division" disabled>
+                                <SelectItem value="no-user" disabled>
                                     Belum ada data pengguna
                                 </SelectItem>
                             )}

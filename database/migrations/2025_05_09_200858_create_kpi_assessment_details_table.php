@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->float('score');
-            $table->text('note');
+            $table->text('note')->nullable();
 
             $table->unsignedBigInteger('assessment_id');
             $table->unsignedBigInteger('metric_id');

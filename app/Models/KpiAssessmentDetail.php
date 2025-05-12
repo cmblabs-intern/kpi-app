@@ -6,17 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class KpiAssessmentDetail extends Model
 {
-        protected $fillable = [
-        'matrix_id',    
-        'score',
-    ];
+    protected $fillable = ['assessment_id', 'metric_id', 'score', 'note'];
 
     public function assessment()
     {
-        return $this->belongsTo(KpiAssessment::class);
+        return $this->belongsTo(KpiAssessment::class, 'assessment_id');
     }
+
     public function metric()
     {
-        return $this->belongsTo(KpiMetric::class, 'matrix_id');
+        return $this->belongsTo(KpiMetric::class, 'metric_id');
     }
 }

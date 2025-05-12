@@ -6,15 +6,9 @@ use App\Models\KpiMetric;
 
 class KpiMetricRepository
 {
-    public function list(array $fields, ?int $perPage = null)
+    public function list(array $fields)
     {
-        $query = KpiMetric::select($fields)->latest();
-
-        if ($perPage) {
-            return $query->paginate($perPage);
-        }
-
-        return $query->get();
+        return KpiMetric::select($fields)->latest()->paginate(10);
     }
 
     public function getById(int $id, array $fields)

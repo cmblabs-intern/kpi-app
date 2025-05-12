@@ -2,104 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KpiAssessmentRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\KpiAssessmentDetailResource;
+use App\Http\Resources\KpiAssessmentResource;
+use App\Http\Resources\KpiMetricResource;
 use App\Models\Employee;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\DB;
 use App\Models\KpiAssessment;
+use App\Models\KpiAssessmentDetail;
 use App\Models\KpiMetric;
+use App\Repositories\KpiAssessmentRepository;
+use App\Services\KpiAssessmentService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class KpiAssessmentController extends Controller
 {
+    private $service;
+
+    public function __construct(KpiAssessmentService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-         $data = KpiAssessment::select(
-            DB::raw('DATE_FORMAT(month, "%Y-%m") as month'),
-            DB::raw('COUNT(*) as count')
-        )
-        ->groupBy('month')
-        ->orderBy('month', 'desc')
-        ->paginate(10); 
-   
-
-        return Inertia::render('assesment/dashboard', [
-            'assessments' => $data,
+        $employees = Employee::all();
+        $metrics = KpiMetric::all();
+        $assessmentDetails = KpiAssessmentDetail::all();
+        $assessments = $this->service->list(['*']);
+        return Inertia::render('kpi-assessments/dashboard', [
+            'employees' => EmployeeResource::collection($employees),
+            'metrics' => KpiMetricResource::collection($metrics),
+            'assessmentDetails' => KpiMetricResource::collection($assessmentDetails),
+            'assessments' => KpiAssessmentResource::collection($assessments)
         ]);
-
     }
+
     public function create()
     {
-           $employees = Employee::join('users', 'employees.user_id', '=', 'users.id')
-            ->select('employees.id', 'users.name')
-            ->get();
-            
-            $matrices = KpiMetric::select('id', 'name')->get();
-            return Inertia::render('assesment/create',
-        [
-            'employees' => $employees,
-            'matrices' => $matrices,
-
-        ]);
-    }
-    public function store(Request $request)
-    {
-         $data = $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'month' => 'required|date_format:Y-m',
-                'details' => 'required|array',
-                'details.*.metric_id' => 'required|exists:kpi_metrics,id',
-                'details.*.score' => 'required|numeric|min:0|max:100',
-    ]);
-        $monthDate = $data['month'] . '-01';
-         $matrixWeights = KpiMetric::whereIn('id', collect($data['details'])->pluck('metric_id'))
-        ->pluck('weight', 'id');
-
-        $totalWeight = 0;
-        $weightedScoreSum = 0;
-
-        foreach ($data['details'] as $detail) {
-        $weight = $matrixWeights[$detail['metric_id']] ?? 0;
-        $totalWeight += $weight;
-        $weightedScoreSum += $detail['score'] * $weight;
-    }
-
-         $finalScore = $totalWeight > 0 ? $weightedScoreSum / $totalWeight : 0;
-
-    
-        $assessment = KpiAssessment::create([
-        'month' => $monthDate,
-        'employee_id'   => $data['user_id'],
-        'total_score' => $finalScore,
-        ]);
-
-        foreach ($data['details'] as $detail) {
-        $assessment->details()->create([
-            'matrix_id' => $detail['metric_id'],
-            'score' => $detail['score'],
+        return Inertia::render('kpi-assessments/dashboard', [
+            'employees' => EmployeeResource::collection(Employee::all()),
+            'metrics' => KpiMetric::all()
         ]);
     }
 
-        return redirect()->route('assesments.index')->with('success', 'Penilaian berhasil disimpan.');
-    }
-
-    public function showByMonth($month)
+    public function store(KpiAssessmentRequest $request)
     {
-             $assessments = KpiAssessment::with(['employee.user', 'details.metric'])
-                ->whereRaw("DATE_FORMAT(month, '%Y-%m') = ?", [$month])
-                ->paginate(2) // Sesuaikan jumlah per halaman
-                ->withQueryString();
+        $data = $request->validated();
+        $details = $data['details'];
+        unset($data['details']);
 
-            return Inertia::render('assesment/show-by-month', [
-                'month' => $month,
-                'assessments' => $assessments,
-            ]);
+        $this->service->create($data, $details);
+
+        return redirect()->route('kpi-assessments.index')->with('success', 'Penilaian KPI berhasil ditambahkan');
     }
-    public function destroy($id)
+
+
+    public function show($id)
     {
-            $assessment = KpiAssessment::findOrFail($id);
-            $assessment->delete();
-
-            return back()->with('success', 'Penilaian berhasil dihapus.');
+        $assessment = $this->service->getById($id);
+        return Inertia::render('kpi-assessments/details', [
+            'assessment' => new KpiAssessmentResource($assessment->load('details.metric'))
+        ]);
     }
-    
 }

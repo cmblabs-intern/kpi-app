@@ -1,27 +1,30 @@
+import { KpiMetric } from '@/types';
 import { ReactNode, useState } from 'react';
-import { KpiMetric, Division } from '@/types';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import Modal from '../modal';
 import KpiMetricCreateForm from './kpi-metric-create-form';
-import KpiMetricUpdateForm from './kpi-metric-update-form';
 
 interface Props {
-  kpiMetric?: KpiMetric;
-  children?: ReactNode;
+    kpiMetric?: KpiMetric;
+    children?: ReactNode;
 }
 
-export default function KpiMetricModal({ kpiMetric, children }: Props) {
-  const [open, setOpen] = useState(false);
+export default function KpiMetricModal() {
+    const [open, setOpen] = useState(false);
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl">
-        {kpiMetric ? (
-          <KpiMetricUpdateForm metric={kpiMetric} onSuccess={() => setOpen(false)} />
-        ) : (
-          <KpiMetricCreateForm onSuccess={() => setOpen(false)} />
-        )}
-      </DialogContent>
-    </Dialog>
-  );
+    return (
+        // <Dialog open={open} onOpenChange={setOpen}>
+        //   <DialogTrigger asChild>{children}</DialogTrigger>
+        //   <DialogContent className="max-w-2xl">
+        //     {kpiMetric ? (
+        //       <KpiMetricUpdateForm metric={kpiMetric} onSuccess={() => setOpen(false)} />
+        //     ) : (
+        //       <KpiMetricCreateForm onSuccess={() => setOpen(false)} />
+        //     )}
+        //   </DialogContent>
+        // </Dialog>
+
+        <Modal title="Tambah KPI Metrix" description="Menambahkan data KPI Metrix" open={open} onOpenChange={setOpen}>
+            <KpiMetricCreateForm onSuccess={() => setOpen(false)} />
+        </Modal>
+    );
 }

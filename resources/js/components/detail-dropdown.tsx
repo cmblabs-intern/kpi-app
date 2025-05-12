@@ -9,15 +9,15 @@ import {
     DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-const DetailDropdown = ({ created_at, updated_at }: { created_at: string; updated_at: string }) => {
+const DetailDropdown = ({ created_at, updated_at, align }: { created_at: string; updated_at: string; align?: "start" | "center" | "end" | undefined; }) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-2">
+                <Button variant="outline" className="p-2">
                     Lihat Detail
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent align={align}>
                 <DropdownMenuLabel className="flex w-full items-center justify-center gap-x-2">
                     <CalendarClock className="h-4 w-4" /> Detail tanggal dan waktu
                 </DropdownMenuLabel>

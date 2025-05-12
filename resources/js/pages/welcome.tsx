@@ -46,21 +46,22 @@ export default function Welcome() {
                         <AppearanceToggleTab />
                         <div className="hidden items-center gap-4 sm:flex">
                             {auth.user ? (
-                                <Link href={route('dashboard')}>
-                                    <button className="rounded-full border border-black px-4 py-2 text-sm transition hover:bg-black/10 dark:border-white dark:hover:bg-white/20">
-                                        Dashboard
-                                    </button>
-                                </Link>
+                                // <Link href={route('dashboard')}>
+                                //     <button className="rounded-full border border-black px-4 py-2 text-sm transition hover:bg-black/10 dark:border-white dark:hover:bg-white/20">
+                                //         Dashboard
+                                //     </button>
+                                // </Link>
+                            <></>
                             ) : (
                                 <>
                                     <Link href={route('login')}>
                                         <button className="cursor-pointer text-sm text-black transition hover:underline dark:text-white">
-                                            Log In
+                                            Masuk
                                         </button>
                                     </Link>
                                     <Link href={route('register')}>
                                         <button className="cursor-pointer rounded-full border border-black px-4 py-2 text-sm text-black transition hover:bg-black/10 dark:border-white dark:text-white dark:hover:bg-white/20">
-                                            Get Started
+                                            Daftar
                                         </button>
                                     </Link>
                                 </>
@@ -95,12 +96,12 @@ export default function Welcome() {
                                 <>
                                     <Link href={route('login')}>
                                         <button className="cursor-pointer text-sm text-black transition hover:underline dark:text-white">
-                                            Log In
+                                            Masuk
                                         </button>
                                     </Link>
                                     <Link href={route('register')}>
                                         <button className="cursor-pointer rounded-full border border-black px-4 py-2 text-sm text-black transition hover:bg-black/10 dark:border-white dark:text-white dark:hover:bg-white/20">
-                                            Get Started
+                                            Daftar
                                         </button>
                                     </Link>
                                 </>
@@ -116,7 +117,7 @@ export default function Welcome() {
                     </p>
                     <Link href={auth.user ? route('dashboard') : route('login')}>
                         <button className="cursor-pointer rounded-full bg-black px-6 py-2 text-sm font-medium text-white transition hover:opacity-80 md:text-base dark:bg-white dark:text-black">
-                            {auth.user ? 'Go to Dashboard' : 'See u Performance'}
+                            {auth.user ? 'Lihat Dashboard' : 'Lihat Performa Anda'}
                         </button>
                     </Link>
                     <div className="mt-8 hidden rounded-xl border p-5 shadow-lg lg:block dark:border-none dark:shadow-none">

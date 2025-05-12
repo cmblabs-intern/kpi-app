@@ -14,6 +14,8 @@ export default function EmployeeDashboard() {
         index: index + 1,
     }));
 
+    console.log(employeeData)
+
     return (
         <AppLayout>
             <Head title="Dashboard Karyawan" />

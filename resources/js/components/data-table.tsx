@@ -53,10 +53,10 @@ export function DataTable<TData, TValue>({ columns, data, paging, service }: Dat
     return (
         <div className="space-y-4">
             <Popover>
-                <PopoverTrigger className="cursor-pointer rounded-sm border w-[10rem] py-1 hover:bg-accent">Filter</PopoverTrigger>
-                <PopoverContent className="space-y-4" align="start">
+                <PopoverTrigger className="cursor-pointer rounded-sm border max-w-[6rem] md:max-w-[10rem] w-full py-1 hover:bg-accent">Filter</PopoverTrigger>
+                <PopoverContent className="space-y-4 max-w-[15rem] w-full md:max-w-sm" align="start">
                     <div className="space-y-3">
-                        <p className="text-center font-semibold">Filter {service} berdasarkan</p>
+                        <p className="text-center font-semibold text-xs md:text-base">Filter {service} berdasarkan</p>
                         <Separator />
                     </div>
                     <div className="flex flex-col gap-4">
@@ -75,13 +75,13 @@ export function DataTable<TData, TValue>({ columns, data, paging, service }: Dat
                                 }
 
                                 return (
-                                    <div key={column.id} className="flex flex-col gap-y-2">
-                                        <Label className='uppercase'>{label}</Label>
+                                    <div key={column.id} className="flex flex-col gap-y-2 max-w-[12rem] w-full md:max-w-sm">
+                                        <Label className='uppercase text-xs md:text-base'>{label}</Label>
                                         <Input
                                             placeholder={`Filter ${label}`}
                                             value={(column.getFilterValue() as string) ?? ''}
                                             onChange={(event) => column.setFilterValue(event.target.value)}
-                                            className="max-w-sm"
+                                            className="text-xs md:text-base"
                                         />
                                     </div>
                                 );
@@ -124,13 +124,13 @@ export function DataTable<TData, TValue>({ columns, data, paging, service }: Dat
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
-                <Button variant="outline" size="sm" onClick={handlePrevPage} disabled={!paging || paging.current_page <= 1}>
+                <Button variant="outline" size="sm" className='text-xs md:text-base' onClick={handlePrevPage} disabled={!paging || paging.current_page <= 1}>
                     Sebelumnya
                 </Button>
-                <span className="text-muted-foreground text-sm">
+                <span className="text-muted-foreground text-xs md:text-sm text-center">
                     Halaman {paging?.current_page ?? 1} dari {paging?.total_page ?? 1}
                 </span>
-                <Button variant="outline" size="sm" onClick={handleNextPage} disabled={!paging || paging.current_page >= paging.total_page}>
+                <Button variant="outline" size="sm" className='text-xs md:text-base' onClick={handleNextPage} disabled={!paging || paging.current_page >= paging.total_page}>
                     Selanjutnya
                 </Button>
             </div>

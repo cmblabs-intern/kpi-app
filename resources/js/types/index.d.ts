@@ -1,5 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { ColumnDef } from '@tanstack/react-table';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -69,17 +68,37 @@ export interface Employee {
     updated_at: string;
 }
 
-export interface KpiMetric {
+export interface KpiAssessment {
     id: number;
-    code: string;
-    name: string;
-    year: number;
-    unit: string;
-    division_id?: number;
-    description?: string;
-    weight?: number;
+    employee_id: number;
+    month: string;
+    total_score: string;
+    employee: Employee;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface KpiAssessmentDetail {
+    id: number;
+    assessment_id: number;
+    metric_id: number;
+    score: string;
+    note: string;
     created_at?: string;
     updated_at?: string;
+    assessment: KpiAssessment;
+    metric: KpiMetric;
+}
+
+export interface KpiMetric {
+    id: number;
+    name: string;
+    division_id: number;
+    division: Division;
+    description?: string;
+    weight: number;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface CreateKpiMetricData {
@@ -102,17 +121,19 @@ export interface KpiMetricPaging {
 
 export interface KpiMetricResponse {
     data: KpiMetric[];
-    paging: KpiMetricPaging;
+    paging?: KpiMetricPaging;
+    message?: string;
+    status: string;
 }
 
-export interface KpiAssesments {
-    id: number;
-    employee_id: number;
-    month: string;
-    total_score: number;
-    created_at: string;
-    updated_at: string;
-}
+// export interface KpiAssesments {
+//     id: number;
+//     employee_id: number;
+//     month: string;
+//     total_score: number;
+//     created_at: string;
+//     updated_at: string;
+// }
 
 export enum UserRole {
     Admin = 'admin',
@@ -162,13 +183,23 @@ export interface EmployeeResponse {
     status: string;
 }
 
-export interface KpiAssesmentsResponse {
-    data: KpiAssesments[];
-    meta?: {
-        total: number;
-        perPage: number;
-        currentPage: number;
-        totalPages: number;
+export interface KpiAssesmentResponse {
+    data: KpiAssesment[];
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
+    };
+    message?: string;
+    status: string;
+}
+
+export interface KpiAssessmentDetailResponse {
+    data: KpiAssessmentDetail[];
+    paging?: {
+        current_page: number;
+        size: number;
+        total_page: number;
     };
     message?: string;
     status: string;

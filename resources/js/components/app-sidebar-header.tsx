@@ -38,8 +38,8 @@ const navbars = [
     },
         {
         id: 6,
-        name: 'Assesment KPI',
-        href: '/assesments',
+        name: 'Penilaian KPI',
+        href: '/kpi-assessments/dashboard',
         role: ['admin']
     },
     {
