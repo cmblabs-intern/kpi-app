@@ -3,7 +3,7 @@ import { kpiMetricColumns } from '@/components/kpi-metric/kpi-metric-columns';
 import KpiMetricModal from '@/components/kpi-metric/kpi-metric-modal';
 import Heading from '@/components/heading';
 import AppLayout from '@/layouts/app-layout';
-import { type KpiMetric, type PageProps, type KpiMetricResponse } from '@/types';
+import { type PageProps, type KpiMetricResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 export default function KpiMetricDashboard() {
@@ -13,9 +13,6 @@ export default function KpiMetricDashboard() {
     ...item,
     index: index + 1,
   }));
-
-  console.log('METRIX RESPONSE : ', kpiMetricsResponse)
-  console.log(kpiData)
 
   return (
     <AppLayout>

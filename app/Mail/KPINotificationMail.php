@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,22 +16,18 @@ class KPINotificationMail extends Mailable
     public $total;
     public $latest;
     public $history;
+    public $month;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($employee, $total, $latest, $history)
+    public function __construct($employee, $total, $latest, $history, $month = null)
     {
         $this->employee = $employee;
         $this->total = $total;
         $this->latest = $latest;
         $this->history = $history;
-    }
-
-    public function build()
-    {
-        return $this->subject('Laporan Penilaian KPI Anda')
-            ->view('emails.kpi-notification');
+        $this->month = $month;
     }
 
     /**
@@ -41,7 +36,7 @@ class KPINotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'K P I Notification Mail',
+            subject: 'Laporan Penilaian KPI Anda',
         );
     }
 
@@ -57,8 +52,6 @@ class KPINotificationMail extends Mailable
 
     /**
      * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

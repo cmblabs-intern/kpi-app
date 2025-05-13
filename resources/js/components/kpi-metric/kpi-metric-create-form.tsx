@@ -36,7 +36,6 @@ export default function KpiMetricCreateForm({ onSuccess }: Props) {
         post(route('kpi-metrics.store'), {
             onFinish: () => reset('name'),
             onSuccess: () => {
-                console.log('Created data: ', data);
                 toast.success('Berhasil menambahkan KPI Metrix');
                 onSuccess?.();
             },

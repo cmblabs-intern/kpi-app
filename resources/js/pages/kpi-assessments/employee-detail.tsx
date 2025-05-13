@@ -1,3 +1,8 @@
+import { Head, usePage } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+
 import { DataTable } from '@/components/data-table';
 import Heading from '@/components/heading';
 import { KpiAssessmentDetailColumn } from '@/components/kpi-assessment-detail/kpi-assessment-detail-columns';
@@ -5,51 +10,47 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { KpiAssessmentDetailResponse, PageProps } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-import { toast } from 'sonner';
 import { monthYearFunc } from './details';
 
-const KaryawanDetail = ({ csrfToken }: { csrfToken: string }) => {
-    const pageProps = usePage<PageProps>().props;
-    const detailResponse = pageProps.allKpiAssessmentsDetail as KpiAssessmentDetailResponse;
-    const detailData = detailResponse?.data.map((item, index) => ({
-        ...item,
-        index: index + 1,
-    }));
+const EmployeeDetail = () => {
+    const [processing, setProcessing] = useState(false);
+
+    const { props } = usePage<PageProps>();
+    console.log('PROPS : ', props);
+    const detailResponse = props.allKpiAssessmentsDetail as KpiAssessmentDetailResponse;
+    const detailData =
+        detailResponse?.data?.map((item, index) => ({
+            ...item,
+            index: index + 1,
+        })) ?? [];
 
     const urlParams = new URLSearchParams(window.location.search);
     const employeeId = urlParams.get('employee');
     const selectedMonth = urlParams.get('month');
 
-    const filteredDetails = detailData?.filter((item) => String(item.assessment.employee_id) === employeeId);
-    console.log('FILTERED DETAILS', filteredDetails);
+    const filteredDetails = detailData.filter((item) => String(item.assessment.employee_id) === employeeId);
 
-    const selectedAssessment = filteredDetails?.find((item) => {
+    const selectedAssessment = filteredDetails.find((item) => {
         const itemMonth = monthYearFunc(item.assessment.month);
-        console.log('ITEM MONTH : ', itemMonth);
-        console.log('SELECTED MONTH : ', selectedMonth);
         return itemMonth === selectedMonth;
     })?.assessment;
 
-    const latestDetails = filteredDetails?.filter((item) => item.assessment.id === selectedAssessment?.id);
-    console.log('LATEST DETAILS', latestDetails);
+    const latestDetails = filteredDetails.filter((item) => item.assessment.id === selectedAssessment?.id);
 
     const groupedAssessmentScores = Object.values(
-        (filteredDetails ?? []).reduce(
+        filteredDetails.reduce(
             (acc, item) => {
                 const date = new Date(item.assessment.month);
-                const monthYearKey = `${date.getFullYear()}-${date.getMonth()}`;
+                const key = `${date.getFullYear()}-${date.getMonth()}`;
 
-                if (!acc[monthYearKey]) {
-                    const monthYear = date.toLocaleString('id-ID', {
-                        month: 'long',
-                        year: 'numeric',
-                    });
-
-                    acc[monthYearKey] = {
+                if (!acc[key]) {
+                    acc[key] = {
                         id: item.assessment.id,
                         score: Number(item.assessment.total_score),
-                        monthYear,
+                        monthYear: date.toLocaleString('id-ID', {
+                            month: 'long',
+                            year: 'numeric',
+                        }),
                     };
                 }
 
@@ -62,16 +63,56 @@ const KaryawanDetail = ({ csrfToken }: { csrfToken: string }) => {
     const employeeName = selectedAssessment?.employee.user.name ?? '';
     const employeeDivision = selectedAssessment?.employee.division.name ?? '';
     const employeePosition = selectedAssessment?.employee.position ?? '';
-    const lastScore = latestDetails.find((item) => item.score > '0');
-
-    console.log('LAST SCORE: ', lastScore);
-
     const monthYear = selectedAssessment?.month
         ? new Date(selectedAssessment.month).toLocaleString('id-ID', {
               month: 'long',
               year: 'numeric',
           })
         : '';
+
+    function getCookie(name: string) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+    }
+
+    const csrfToken = getCookie('XSRF-TOKEN');
+    const latestAssessment = latestDetails?.[0]?.assessment;
+
+    const handleNotify = async () => {
+        setProcessing(true);
+        try {
+            const response = await fetch('/kpi-assessments/notify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': decodeURIComponent(csrfToken ?? ''),
+                    Accept: 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    employee_id: latestAssessment?.employee_id,
+                    month: latestAssessment?.month
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal mengirim notifikasi');
+            }
+
+            const result = await response.json();
+            toast.success(result.message);
+        } catch (error) {
+            console.error(error);
+            toast.error('Gagal mengirim notifikasi');
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    const typeOfWeight = detailData.map((item) => typeof (item.metric.weight));
+    console.log('TYPE OF WEIGHT : ', typeOfWeight);
+
     return (
         <AppLayout>
             <Head title="Detail Penilaian KPI" />
@@ -119,20 +160,10 @@ const KaryawanDetail = ({ csrfToken }: { csrfToken: string }) => {
                     <CardFooter>
                         <Button
                             className="mt-2 cursor-pointer bg-sky-600 text-white hover:bg-sky-500/50"
-                            onClick={async () => {
-                                const response = await fetch('/kpi-assessments/notify', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': csrfToken,
-                                    },
-                                    body: JSON.stringify(latestDetails?.[0]),
-                                });
-
-                                const result = await response.json();
-                                toast(result.message);
-                            }}
+                            onClick={handleNotify}
+                            disabled={processing}
                         >
+                            {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                             Kirim Notifikasi
                         </Button>
                     </CardFooter>
@@ -142,4 +173,4 @@ const KaryawanDetail = ({ csrfToken }: { csrfToken: string }) => {
     );
 };
 
-export default KaryawanDetail;
+export default EmployeeDetail;

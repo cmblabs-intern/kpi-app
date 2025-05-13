@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
-import { EmployeeResponse, KpiMetricResponse, PageProps } from '@/types';
+import { DivisionResponse, EmployeeResponse, KpiMetricResponse, PageProps } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { CalendarIcon, LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
@@ -36,21 +36,25 @@ const KpiAssessmentCreateForm = ({ onSuccess }: CreateKpiAssessmentFormProps) =>
     const [openMetricDialog, setOpenMetricDialog] = useState(false);
 
     const err = pageProps.errors?.month;
-    // console.log('ERRORS : ', err.toString())
     const employeesResponse = pageProps.employees as EmployeeResponse;
     const metricesResponse = pageProps.allKpiMetrics as KpiMetricResponse;
+    const divisionsResponse = pageProps.allDivisions as DivisionResponse;
+
     const metrices = metricesResponse.data;
     const employees = employeesResponse.data;
+    const divisions = divisionsResponse.data;
+
+    const division = divisions.map(item => item.id);
+    const employee = employees.filter((item) => item.division_id);
+
+    console.log('DIVISIONS : ', divisions)
+    console.log('employee : ', employee)
+    console.log('division : ', division)
 
     const { data, setData, post, processing, errors } = useForm<Required<CreateKpiAssessmentForm>>({
         employee_id: '',
         month: '',
-        details:
-            metrices?.map((m) => ({
-                metric_id: m.id,
-                score: '0',
-                note: '',
-            })) || [],
+        details: [],
     });
 
     const submit: FormEventHandler = (e) => {
@@ -67,25 +71,35 @@ const KpiAssessmentCreateForm = ({ onSuccess }: CreateKpiAssessmentFormProps) =>
         });
     };
 
-    if (!metrices || metrices.length === 0 || !employees || employees.length === 0) {
-        return <div>Loading...</div>;
-    }
-
     const selectedMonth = data.month ? new Date(data.month) : undefined;
 
-    // Get selected employee's divisi_id
     const selectedEmployee = employees.find((emp) => emp.id.toString() === data.employee_id);
     console.log('SELECTED EMPLOYEE : ', selectedEmployee);
 
     const selectedEmployeeDivisiId = selectedEmployee?.division?.id;
     console.log('SELECTED EMPLOYEE DIVISION ID : ', selectedEmployeeDivisiId);
 
-    // Filter the metrics based on the selected employee's divisi_id
     const filteredMetrics = selectedEmployeeDivisiId ? metrices.filter((metric) => metric.division_id === selectedEmployeeDivisiId) : [];
 
-    console.log('FILTERED METRICS : ', filteredMetrics);
-    console.log('METRICS : ', metrices);
-    console.log('PAGE PROPS : ', pageProps);
+    useEffect(() => {
+        if (!selectedEmployeeDivisiId) return;
+    
+        const metricsForDivision = metrices.filter(
+            (metric) => metric.division_id === selectedEmployeeDivisiId,
+        );
+    
+        const newDetails = metricsForDivision.map((metric) => ({
+            metric_id: metric.id,
+            score: '0',
+            note: '',
+        }));
+    
+        setData('details', newDetails);
+    }, [data.employee_id, metrices, selectedEmployeeDivisiId, setData]);
+
+    if (!metrices || metrices.length === 0 || !employees || employees.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <form onSubmit={submit} className="space-y-4">
@@ -129,7 +143,7 @@ const KpiAssessmentCreateForm = ({ onSuccess }: CreateKpiAssessmentFormProps) =>
                             selected={selectedMonth}
                             onSelect={(date) => {
                                 if (date) {
-                                    setData('month', date.toDateString());
+                                    setData('month', format(date, 'yyyy-MM-dd'));
                                 }
                                 setOpenCalendarDialog(false);
                             }}
@@ -170,7 +184,7 @@ const KpiAssessmentCreateForm = ({ onSuccess }: CreateKpiAssessmentFormProps) =>
                                                     type="number"
                                                     min={0}
                                                     max={100}
-                                                    value={data.details[index].score}
+                                                    value={data.details[index]?.score}
                                                     onChange={(e) =>
                                                         setData(
                                                             'details',
@@ -184,7 +198,7 @@ const KpiAssessmentCreateForm = ({ onSuccess }: CreateKpiAssessmentFormProps) =>
                                             <div className="space-y-2">
                                                 <Label>Catatan</Label>
                                                 <Textarea
-                                                    value={data.details[index].note}
+                                                    value={data.details[index]?.note}
                                                     onChange={(e) =>
                                                         setData(
                                                             'details',

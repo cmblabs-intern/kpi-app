@@ -12,9 +12,6 @@ export const kpiMetricColumns: ColumnDef<KpiMetric>[] = [
     accessorKey: 'division_name',
     accessorFn: (row) => row.division?.name ?? '',
     header: 'Divisi',
-    cell: ({ row }) => {
-      return row.original.division?.name ?? '';
-    },
     enableColumnFilter: true,
   },
   {
@@ -29,6 +26,7 @@ export const kpiMetricColumns: ColumnDef<KpiMetric>[] = [
   },
   {
     accessorKey: 'weight',
+    accessorFn: (row) => row.weight.toString() ?? '',
     header: 'Bobot (%)',
     enableColumnFilter: true,
   },

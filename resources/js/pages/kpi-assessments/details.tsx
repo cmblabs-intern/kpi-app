@@ -16,29 +16,13 @@ const Details = () => {
         ...item,
         index: index + 1,
     }));
-    console.log('ALL DATA: ', allData);
 
     const urlParams = new URLSearchParams(window.location.search);
     const month = urlParams.get('month');
-    console.log('MONTH URL : ', month);
-
-    const dataConvertMonthYear = allData.map((data) => monthYearFunc(data.assessment.month));
-    console.log('ALL DATA CONVERT MONTH & YEAR : ', dataConvertMonthYear);
 
     const dataByMonth = allData.filter((item) => monthYearFunc(item.assessment.month) === month);
-    console.log('DATA BY MONTH URL: ', dataByMonth);
 
     const uniqueByAssessmentId = Array.from(new Map(dataByMonth.map((item) => [item.assessment_id, item])).values());
-    console.log('DATA BY ASSESSMENT ID : ', uniqueByAssessmentId)
-
-    const data = dataByMonth ? [dataByMonth] : [];
-    console.log('DATA: ', data);
-
-    const detailData = data.map((item, index) => ({
-        ...item,
-        index: index + 1,
-    }));
-    console.log('DETAIL DATA: ', detailData);
 
     return (
         <AppLayout>

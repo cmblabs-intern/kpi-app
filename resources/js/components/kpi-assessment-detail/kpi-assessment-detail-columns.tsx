@@ -1,13 +1,10 @@
 import { KpiAssessmentDetail } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import DetailDropdown from '../detail-dropdown';
+import { Button } from '../ui/button';
+import { ArrowUpDown } from 'lucide-react';
 
 export const KpiAssessmentDetailColumn: ColumnDef<KpiAssessmentDetail>[] = [
-    {
-        accessorKey: 'index',
-        header: 'No.',
-        enableColumnFilter: false,
-    },
     {
         accessorFn: (row) => row.metric.name ?? '',
         header: 'Nama Metrix',
@@ -23,15 +20,29 @@ export const KpiAssessmentDetailColumn: ColumnDef<KpiAssessmentDetail>[] = [
         enableColumnFilter: true,
     },
     {
-        accessorKey: 'weight',
-        header: 'Bobot Metrix',
-        cell: ({ row }) => row.original.metric.weight ?? '',
+        accessorKey: 'bobot metrix',
+        accessorFn: (row) => row.metric?.weight.toString() ?? '',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className='font-bold'>
+                    Bobot Metrix (%)
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
         enableColumnFilter: true,
     },
     {
-        accessorKey: 'score',
-        header: 'Nilai',
-        cell: ({ row }) => row.original.score ?? '',
+        accessorKey: 'nilai',
+        accessorFn: (row) => row.score.toString() ?? '',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className='font-bold'>
+                    Nilai KPI
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
         enableColumnFilter: true,
     },
     {
