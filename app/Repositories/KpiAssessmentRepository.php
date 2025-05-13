@@ -32,4 +32,11 @@ class KpiAssessmentRepository
         $assessment = KpiAssessment::findOrFail($id);
         $assessment->delete();
     }
+
+    public function existsForEmployeeAndMonth(int $employeeId, string $month): bool
+    {
+        return KpiAssessment::where('employee_id', $employeeId)
+            ->where('month', $month)
+            ->exists();
+    }
 }

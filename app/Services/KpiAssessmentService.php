@@ -4,7 +4,6 @@ namespace App\Services;
 use App\Models\KpiAssessmentDetail;
 use App\Models\KpiMetric;
 use App\Repositories\KpiAssessmentRepository;
-use App\Repositories\KpiMetricRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -30,6 +29,14 @@ class KpiAssessmentService
     public function create(array $data, array $details)
     {
         return DB::transaction(function () use ($data, $details) {
+            $exists = $this->repository->existsForEmployeeAndMonth($data['employee_id'], $data['month']);
+            if ($exists) {
+                throw ValidationException::withMessages([
+                    'month' => ['Penilaian untuk karyawan ini di bulan tersebut sudah ada.'],
+                ]);
+            }
+
+            $data['total_score'] = 0;
             $assessment = $this->repository->create($data);
 
             $totalScore = 0;

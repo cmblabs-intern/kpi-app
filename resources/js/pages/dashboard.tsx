@@ -4,68 +4,107 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { DivisionResponse, EmployeeResponse, PageProps, User as UserType } from '@/types';
+import {
+    DivisionResponse,
+    EmployeeResponse,
+    KpiAssesmentResponse,
+    KpiAssessmentDetail,
+    KpiAssessmentDetailResponse,
+    PageProps,
+    User as UserType,
+} from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { User, Building2, CircleGauge } from 'lucide-react';
+import { ArrowUpDown, Building2, CircleGauge, User } from 'lucide-react';
+import { monthYearFunc } from './kpi-assessments/details';
 
 // === Start ===
 // Kolom untuk tabel penilaian KPI (Buat didalam file components/kpi/kpi-columns.tsx)
-type KpiRow = {
-    name: string;
-    division: string;
-    score: number;
-    month: string;
-};
 
-const kpiColumns: ColumnDef<KpiRow>[] = [
+const kpiColumns: ColumnDef<KpiAssessmentDetail>[] = [
     {
-        accessorKey: 'name',
-        header: 'Karyawan',
-        cell: ({ row }) => <div>{row.getValue('name')}</div>,
+        accessorKey: 'Karyawan',
+        accessorFn: (row) => row.assessment?.employee?.user?.name ?? '',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="font-bold">
+                    Karyawan
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        enableColumnFilter: true,
     },
     {
-        accessorKey: 'division',
+        accessorFn: (row) => row.assessment?.employee?.division?.name ?? '',
         header: 'Divisi',
-        cell: ({ row }) => <div>{row.getValue('division')}</div>,
+        enableColumnFilter: true,
     },
     {
-        accessorKey: 'score',
-        header: 'Nilai KPI',
-        cell: ({ row }) => <div>{row.getValue('score')}</div>,
+        accessorKey: 'Nilai',
+        accessorFn: (row) => row.assessment?.total_score ?? '',
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="font-bold">
+                    Nilai KPI
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        enableColumnFilter: true,
     },
     {
-        accessorKey: 'month',
+        accessorFn: (row) => monthYearFunc(row.assessment?.month) ?? '',
         header: 'Bulan',
-        cell: ({ row }) => <div>{row.getValue('month')}</div>,
+        enableColumnFilter: true,
     },
 ];
 
 // === End ===
 
-// Dummy data KPI user
-const monthlyKPI = [
-    { month: 'Januari', score: 75, evaluator: 'Admin HR', feedback: 'Kinerja cukup baik, namun perlu peningkatan komunikasi.' },
-    { month: 'Februari', score: 78, evaluator: 'Admin HR', feedback: 'Ada perkembangan dari sisi tanggung jawab.' },
-    { month: 'Maret', score: 85, evaluator: 'Admin HR', feedback: 'Target bulanan tercapai dengan baik.' },
-    { month: 'April', score: 82, evaluator: 'Admin HR', feedback: 'Masih konsisten, namun beberapa deadline agak terlambat.' },
-    { month: 'Mei', score: 88, evaluator: 'Admin HR', feedback: 'Sangat aktif dalam tim dan proaktif mencari solusi.' },
-    { month: 'Juni', score: 90, evaluator: 'Admin HR', feedback: 'Performa maksimal dan mendapat apresiasi dari divisi lain.' },
-    { month: 'Juli', score: 87, evaluator: 'Admin HR', feedback: 'Masih sangat baik meskipun workload meningkat.' },
-    { month: 'Agustus', score: 84, evaluator: 'Admin HR', feedback: 'Pekerjaan selesai tepat waktu dan rapi.' },
-    { month: 'September', score: 80, evaluator: 'Admin HR', feedback: 'Perlu meningkatkan presisi dalam laporan mingguan.' },
-    { month: 'Oktober', score: 85, evaluator: 'Admin HR', feedback: 'Terlihat aktif dalam rapat dan diskusi proyek.' },
-    { month: 'November', score: 88, evaluator: 'Admin HR', feedback: 'Mampu menyelesaikan masalah tanpa supervisi.' },
-    { month: 'Desember', score: 91, evaluator: 'Admin HR', feedback: 'Performa terbaik sepanjang tahun. Konsisten dan efisien.' },
-];
-
 export default function DashboardAdmin() {
-    const { allEmployees, allDivisions, auth } = usePage<PageProps<{ auth: UserType[] }>>().props;
+    const { allEmployees, allDivisions, auth, allKpiAssessmentsDetail, allKpiAssessments } = usePage<PageProps<{ auth: UserType[] }>>().props;
     const employees = (allEmployees as EmployeeResponse)?.data ?? [];
     const divisions = (allDivisions as DivisionResponse)?.data ?? [];
-    const latestKPI = monthlyKPI[monthlyKPI.length - 1];
+    const kpiAssessments = (allKpiAssessments as KpiAssesmentResponse)?.data ?? [];
+    const kpiAssessmentDetails = (allKpiAssessmentsDetail as KpiAssessmentDetailResponse)?.data ?? [];
+
     const user = auth.user;
+    const employee = employees.find((item) => item.user_id === user.id);
+    const position = employee?.position;
+    const division = employee?.division.name;
+    const userKpiDetails = kpiAssessmentDetails.filter((item) => item.assessment?.employee_id === employee?.id);
+    const sortedUserKpi = userKpiDetails.sort(
+        (a, b) => new Date(a.assessment?.created_at || '').getTime() - new Date(b.assessment?.created_at || '').getTime(),
+    );
+    const latestKPI = sortedUserKpi.at(-1);
+    const totalAssessments = kpiAssessmentDetails.length;
+    const userKpiAssessments = kpiAssessments.filter((item) => item.employee_id === employee?.id);
+    const totalAssessmentCount = userKpiAssessments.length;
+    const latestAssessment = userKpiAssessments.at(-1);
+    const latestScore = latestAssessment?.total_score ?? 0;
+
+    const groupedByEmployeeAndMonth = Object.values(
+        kpiAssessmentDetails.reduce(
+            (acc, detail) => {
+                const assessment = detail.assessment;
+                if (!assessment) return acc;
+
+                const key = `${assessment.employee_id}-${assessment.month}`;
+                if (!acc[key]) {
+                    acc[key] = {
+                        ...detail,
+                        score: assessment.total_score, // ambil total_score langsung
+                    };
+                }
+                return acc;
+            },
+            {} as Record<string, KpiAssessmentDetail>,
+        ),
+    );
+
+    console.log(kpiAssessmentDetails);
 
     return (
         <AppLayout>
@@ -76,7 +115,9 @@ export default function DashboardAdmin() {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-2xl font-bold">Selamat datang, {user.name}</h1>
-                            <p className="text-muted-foreground text-sm">Posisi: Software Engineer - Divisi: Information Technology</p>
+                            <p className="text-muted-foreground text-sm">
+                                Posisi: {position} - Divisi: {division}
+                            </p>
                         </div>
                     </div>
 
@@ -87,7 +128,7 @@ export default function DashboardAdmin() {
                                 <CardTitle>Jumlah Penilaian KPI</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-4xl font-bold">{monthlyKPI.length}</p>
+                                <p className="text-4xl font-bold">{totalAssessmentCount}</p>
                             </CardContent>
                             <div></div>
                         </Card>
@@ -104,9 +145,31 @@ export default function DashboardAdmin() {
                                 </TextLink>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-lg font-semibold">{latestKPI.score} / 100</div>
-                                <p className="text-muted-foreground text-sm">Evaluator: {latestKPI.evaluator}</p>
-                                <p className="mt-1 text-sm">Feedback: {latestKPI.feedback}</p>
+                                <div className="text-lg font-semibold">{latestScore} / 100</div>
+
+                                {/* Feedback berdasarkan nilai */}
+                                <p className="mt-1 text-sm">
+                                    {latestKPI?.score !== undefined
+                                        ? // Menambahkan feedback sesuai dengan nilai KPI
+                                          (() => {
+                                              const score = Number(latestKPI?.score ?? 0);
+                                              let feedback = '';
+                                              if (score < 60) {
+                                                  feedback =
+                                                      'KPI Anda perlu perbaikan. Cobalah untuk fokus pada area yang lebih membutuhkan peningkatan.';
+                                              } else if (score < 75) {
+                                                  feedback =
+                                                      'KPI Anda cukup baik, namun masih ada ruang untuk perbaikan agar dapat mencapai standar yang lebih tinggi.';
+                                              } else if (score < 90) {
+                                                  feedback =
+                                                      'KPI Anda sangat baik, namun beberapa aspek masih bisa lebih ditingkatkan untuk mencapai performa yang optimal.';
+                                              } else {
+                                                  feedback = 'KPI Anda sangat baik, Anda telah menunjukkan performa luar biasa.';
+                                              }
+                                              return feedback;
+                                          })()
+                                        : 'Belum ada penilaian terbaru.'}
+                                </p>
                             </CardContent>
                         </Card>
                     </div>
@@ -114,18 +177,49 @@ export default function DashboardAdmin() {
                     {/*  Menampilkan Riwayat KPI Bulanan */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Riwayat Penilaian KPI 4 Bulan Terakhir</CardTitle>
+                            <CardTitle>Riwayat Penilaian 4 Bulan Terakhir</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {monthlyKPI.slice(-4).map((item, idx) => (
-                                <div key={idx} className="border-b pb-2">
-                                    <p className="font-medium">{item.month}</p>
-                                    <p className="text-muted-foreground text-sm">
-                                        Skor: {item.score} - Evaluator: {item.evaluator}
-                                    </p>
-                                    <p className="text-sm italic">"{item.feedback}"</p>
-                                </div>
-                            ))}
+                            {Object.values(
+                                sortedUserKpi.reduce(
+                                    (acc, item) => {
+                                        const month = item.assessment?.month ?? '';
+                                        if (!acc[month]) acc[month] = [];
+                                        acc[month].push(item);
+                                        return acc;
+                                    },
+                                    {} as Record<string, typeof sortedUserKpi>,
+                                ),
+                            )
+                                .sort((a, b) => new Date(a[0].assessment?.month ?? '').getTime() - new Date(b[0].assessment?.month ?? '').getTime())
+                                .slice(-4)
+                                .reverse()
+                                .map((group, idx) => {
+                                    const month = group[0].assessment?.month ?? '';
+                                    const formattedMonth = monthYearFunc(month);
+                                    const avgScore = (group.reduce((sum, i) => sum + Number(i.score), 0) / group.length).toFixed(2);
+                                    let feedback = '';
+                                    const avg = Number(avgScore);
+                                    if (avg < 60) {
+                                        feedback = 'Nilai KPI perlu perbaikan. Cobalah untuk fokus pada area yang lebih membutuhkan peningkatan.';
+                                    } else if (avg < 75) {
+                                        feedback =
+                                            'Nilai KPI cukup baik, namun masih ada ruang untuk perbaikan agar dapat mencapai standar yang lebih tinggi.';
+                                    } else if (avg < 90) {
+                                        feedback =
+                                            'Nilai KPI sangat baik, namun beberapa aspek masih bisa lebih ditingkatkan untuk mencapai performa yang optimal.';
+                                    } else {
+                                        feedback = 'Nilai KPI sangat baik, Anda telah menunjukkan performa luar biasa.';
+                                    }
+
+                                    return (
+                                        <div key={idx} className="border-b pb-2">
+                                            <p className="font-medium">{formattedMonth}</p>
+                                            <p className="text-muted-foreground text-sm">Total nilai KPI: {avgScore}</p>
+                                            <p className="text-sm italic">"{feedback}"</p>
+                                        </div>
+                                    );
+                                })}
                         </CardContent>
                     </Card>
                 </div>
@@ -136,11 +230,11 @@ export default function DashboardAdmin() {
                         Stat Cards
                         Ringkasan metrik utama untuk admin
                         Menampilkan jumlah karyawan, divisi, dan total penilaian KPI
-                        */}
+                    */}
                     <div className="grid gap-10 md:grid-cols-3">
-                        <StatCard title="Karyawan" value={employees.length.toString()} icon={<User className="size-8" />} />
-                        <StatCard title="Divisi" value={divisions.length.toString()} icon={<Building2 className="size-8" />} />
-                        <StatCard title="Penilaian KPI (Dummy)" value="123" icon={<CircleGauge className="size-8" />} />
+                        <StatCard title="Total Karyawan" value={employees.length.toString()} icon={<User className="size-8" />} />
+                        <StatCard title="Total Divisi" value={divisions.length.toString()} icon={<Building2 className="size-8" />} />
+                        <StatCard title="Total Penilaian KPI" value={totalAssessments.toString()} icon={<CircleGauge className="size-8" />} />
                     </div>
 
                     {/* Grafik KPI (Dummy) */}
@@ -158,15 +252,9 @@ export default function DashboardAdmin() {
                         <h2 className="bg-accent absolute -top-3 left-6 rounded-[4px] border px-2 text-sm font-semibold">
                             Penilaian Terbaru (Dummy)
                         </h2>
-                        <DataTable<KpiRow, string>
+                        <DataTable
                             columns={kpiColumns}
-                            data={[
-                                { name: 'Yerikho William', division: 'Information Technology', score: 90, month: 'Maret 2025' },
-                                { name: 'Puji Astuti', division: 'Marketing', score: 78, month: 'Maret 2025' },
-                                { name: 'Rido Septiawan', division: 'Product', score: 85, month: 'Maret 2025' },
-                                { name: 'Mochamad Faathir Azukhruf Siswandi', division: 'Product', score: 85, month: 'Maret 2025' },
-                                { name: 'Marhadi Akbar', division: 'Human Resource', score: 85, month: 'Maret 2025' },
-                            ]}
+                            data={groupedByEmployeeAndMonth}
                             service="karyawan"
                             paging={{ current_page: 1, total_page: 2, size: 10 }}
                         />
@@ -181,7 +269,7 @@ function StatCard({ title, value, icon }: { title: string; value: string; icon: 
     return (
         <div className="bg-background relative flex aspect-video flex-col items-center justify-center rounded-xl border pt-6 shadow-sm">
             <h2 className="bg-accent absolute -top-3 left-6 rounded-[4px] border px-2 text-sm font-semibold">{title}</h2>
-            <div className="flex flex-col items-center justify-center mb-6">
+            <div className="mb-6 flex flex-col items-center justify-center">
                 <div className="rounded-full border p-2">{icon}</div>
                 <p className="text-muted-foreground text-sm">Total:</p>
                 <p className="text-2xl font-bold">{value}</p>

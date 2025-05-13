@@ -3,7 +3,6 @@ import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import AppLogoIcon from './app-logo-icon';
 import { NavUser } from './nav-user';
-import Notification from './notification';
 
 const navbars = [
     {
@@ -85,7 +84,6 @@ export function AppSidebarHeader() {
                         })}
                     </ul>
                 </nav>
-                {role === 'user' ? <Notification /> : ''}
                 <NavUser />
             </div>
         </header>

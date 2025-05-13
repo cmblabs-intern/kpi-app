@@ -10,6 +10,7 @@ use App\Models\KpiAssessmentDetail;
 use App\Models\KpiMetric;
 use App\Services\KpiAssessmentDetailService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class KpiAssessmentDetailController extends Controller
@@ -64,18 +65,16 @@ class KpiAssessmentDetailController extends Controller
 
     public function sendNotification(Request $request)
     {
-        try {
-            $email = $this->kpiAssessmentDetailService->sendNotification($request->input('employee_id'));
+        $employeeId = $request->input('employee_id');
+        $month = $request->input('month');
 
-            return response()->json([
-                'message' => 'Email notifikasi berhasil dikirim',
-                'notification' => [
-                    'title' => 'Notifikasi Terkirim',
-                    'message' => 'Email telah berhasil dikirim ke ' . $email,
-                ]
-            ]);
+        try {
+            $this->kpiAssessmentDetailService->sendKpiNotificationEmail($employeeId, $month);
+            return response()->json(['message' => 'Email KPI berhasil dikirim.'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 422);
+            Log::error('Gagal mengirim email KPI: ' . $e->getMessage());
+            return response()->json(['message' => 'Gagal mengirim email KPI.'], 500);
         }
     }
+    
 }
