@@ -35,7 +35,7 @@ const navbars = [
         href: '/kpi-metrics/dashboard',
         role: ['admin']
     },
-    {
+        {
         id: 6,
         name: 'Penilaian KPI',
         href: '/kpi-assessments/dashboard',

@@ -21,6 +21,7 @@ class Employee extends Model
         return $this->belongsTo(Division::class);
     }
 
+
     public function kpiAssessment()
     {
         return $this->hasMany(KpiAssessment::class);
