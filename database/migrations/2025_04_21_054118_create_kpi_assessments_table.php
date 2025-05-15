@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->date('month');
-            $table->float('total_score');
+            $table->float('total_score')->default(0);
             $table->timestamps();
         });
     }

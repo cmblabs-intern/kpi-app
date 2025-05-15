@@ -1,6 +1,6 @@
 import Heading from '@/components/heading';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, KpiAssesments, KpiAssesmentsResponse, PageProps } from '@/types';
+import { BreadcrumbItem, KpiAssesmentResponse, KpiAssessment, PageProps } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
 
@@ -12,9 +12,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ReportDashboard() {
-    const { report } = usePage<PageProps<{ report: KpiAssesments }>>().props;
+    const { report } = usePage<PageProps<{ report: KpiAssessment }>>().props;
 
-    const reportResponse = report as KpiAssesmentsResponse;
+    const reportResponse = report as KpiAssesmentResponse;
 
     // Buat format data untuk chart
     const monthLabelsMap = new Map<string, string>();
@@ -48,45 +48,44 @@ export default function ReportDashboard() {
                 <div className="flex items-center justify-between">
                     <Heading title="Laporan Karyawan" description="Laporan KPI Karyawan Perusahaan" />
                 </div>
-                <div className='bg-neutral-800 rounded-lg p-4'>
-
-                <Chart
-                    type="bar"
-                    height={350}
-                    series={series}
-                    options={{
-                        chart: {
-                            id: 'kpi-chart',
-                        },
-                        xaxis: {
-                            categories: months,
-                            labels: {
-                                style: {
-                                    colors: '#fff', // Warna label sumbu X (column)
-                                    fontSize: '14px',
-                                    fontFamily: 'Arial',
+                <div className="rounded-lg bg-neutral-800 p-4">
+                    <Chart
+                        type="bar"
+                        height={350}
+                        series={series}
+                        options={{
+                            chart: {
+                                id: 'kpi-chart',
+                            },
+                            xaxis: {
+                                categories: months,
+                                labels: {
+                                    style: {
+                                        colors: '#fff', // Warna label sumbu X (column)
+                                        fontSize: '14px',
+                                        fontFamily: 'Arial',
+                                    },
                                 },
                             },
-                        },
-                        yaxis: {
-                            labels: {
-                                style: {
-                                    colors: '#fff', // Warna label sumbu X (column)
-                                    fontSize: '14px',
-                                    fontFamily: 'Arial',
+                            yaxis: {
+                                labels: {
+                                    style: {
+                                        colors: '#fff', // Warna label sumbu X (column)
+                                        fontSize: '14px',
+                                        fontFamily: 'Arial',
+                                    },
                                 },
                             },
-                        },
-                        tooltip: {
-                            theme: 'dark',
-                        },
-                        legend: {
-                            labels: {
-                                colors: '#fff',
+                            tooltip: {
+                                theme: 'dark',
                             },
-                        },
-                    }}
-                />
+                            legend: {
+                                labels: {
+                                    colors: '#fff',
+                                },
+                            },
+                        }}
+                    />
                 </div>
             </div>
         </AppLayout>
