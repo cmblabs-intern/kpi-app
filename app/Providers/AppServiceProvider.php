@@ -74,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(KpiAssessmentService::class, function ($app) {
             return new KpiAssessmentService($app->make(KpiAssessmentRepository::class));
         });
-       
+
         // KpiAssessmentDetail
         $this->app->bind(KpiAssessmentDetailRepository::class, function ($app) {
             return new KpiAssessmentDetailRepository();
